@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOS HERO</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #1e3c72, #2a5298);
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-container {
+    max-width: 500px;
+    width: 90%;
+    margin: auto;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.screen {
+    display: none;
+}
+.active-screen {
+    display: block;
+}
+
+h1 { font-size: 28px; margin-bottom: 5px; }
+h2 { font-size: 20px; margin: 20px 0; }
+
+button {
+    display: block;
+    width: 100%;
+    margin: 12px 0;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+    color: #1e3c72;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-menu-play { background: #4CAF50; color: white; font-size: 18px; }
+.btn-menu-sos { background: #F44336; color: white; font-size: 18px; }
+.btn-back { background: #607D8B; color: white; margin-top: 20px; }
+.correct { background: #2E7D32 !important; color: white !important; }
+.wrong { background: #C62828 !important; color: white !important; }
+#next { background: #FF9800; color: white; display: none; }
+
+#explanation { margin: 15px 0; font-style: italic; font-size: 15px; color: #FFEB3B; display: none; }
+.guide-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 15px; border-left: 5px solid #FF9800; }
+.guide-box h3 { margin-top: 0; margin-bottom: 8px; color: #FFEB3B; font-size: 18px; }
+.guide-box p { margin: 0; font-size: 14px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <div id="screen-menu" class="screen active-screen">
+        <h1>🚑 SOS HERO</h1>
+        <p style="opacity: 0.7;">O aplicativo que salva vidas</p>
+        <div style="margin-top: 40px;">
+            <button class="btn-menu-play" onclick="changeScreen('screen-game')">🎮 JOGAR TREINAMENTO</button>
+            <button class="btn-menu-sos" onclick="changeScreen('screen-sos')">🚨 GUIA SOS RÁPIDO</button>
+        </div>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <h1>🎮 TREINAMENTO</h1>
+        <h2 id="question"></h2>
+        <div id="explanation"></div>
+        <div id="answers"></div>
+        <button id="next" onclick="nextQuestion()">Próxima Missão ➔</button>
+        <div id="score" style="margin-top: 20px;">Pontos: 0</div>
+        <button class="btn-back" onclick="goToMenu()">↩ Voltar ao Menu</button>
+    </div>
+
+    <div id="screen-sos" class="screen">
+        <h1 style="color: #FFCDD2;">🚨 GUIA DE EMERGÊNCIA</h1>
+        <p style="margin-bottom: 20px;">Ligue sempre para o <strong>SAMU (192)</strong> em casos graves!</p>
+        
+        <div style="max-height: 380px; overflow-y: auto; padding-right: 5px;">
+            <div class="guide-box">
+                <h3>🥖 Engasgo (Pessoa adulta sem som)</h3>
+                <p>Fique atrás da pessoa, abrace a cintura dela e pressione a boca do estômago para dentro e para cima (Manobra de Heimlich) com força.</p>
+            </div>
+            
+            <div class="guide-box">
+                <h3>👶 Engasgo em Bebês (Menores de 1 ano)</h3>
+                <p>Deite o bebê de bruços no seu antebraço, com a cabeça mais baixa que o corpo. Aplique 5 batidas firmes nas costas, entre os ombros.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🧠 AVC / Derrame (Sinais SAMU)</h3>
+                <p>Observe se a boca entortou ao <b>S</b>orrir, se falta força para dar um <b>A</b>braço ou se a fala está confusa como uma <b>M</b>úsica. Se notar isso, ligue <b>U</b>rgente para o 192.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🫀 Infarto (Ataque Cardíaco)</h3>
+                <p>Dor forte no peito que aperta e pode ir para o braço esquerdo ou costas, com suor frio. Deixe a pessoa sentada, calma e ligue para o 192 na hora.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🌪️ Convulsão (Debater-se)</h3>
+                <p>Proteja a cabeça da pessoa com algo macio (uma blusa) e vire-a de lado para não engasgar. NUNCA tente segurar a língua dela ou colocar objetos na boca.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🩸 Cortes e Sangramentos</h3>
+                <p>Lave com água limpa e pressione um pano limpo firmemente sobre o ferimento para estancar o sangue. Nunca jogue pó de café, açúcar ou pomadas caseiras.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🔥 Queimaduras</h3>
+                <p>Coloque a área queimada debaixo da água corrente da torneira por 15 minutos. Nunca passe pasta de dente, manteiga ou gelo direto na bolha.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>⚡ Choque Elétrico</h3>
+                <p>NUNCA toque na vítima se ela ainda estiver encostada na tomada ou fio. Desligue o disjuntor geral de energia imediatamente antes de ajudar.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🛌 Desmaio Comum</h3>
+                <p>Se a pessoa caiu mas está deitada e respirando, eleve as pernas dela a cerca de 30 cm do chão. Isso faz o sangue voltar mais rápido para o cérebro.</p>
+            </div>
+
+            <div class="guide-box">
+                <h3>🐍 Picadas de Cobras ou Escorpiões</h3>
+                <p>Lave o local apenas com água e sabão. Mantenha a vítima deitada e em repouso absoluto para o veneno não espalhar. Leve direto ao hospital.</p>
+            </div>
+        </div>
+
+        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Voltar ao Menu</button>
+    </div>
+
+</div>
+
+<script>
+function changeScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+    document.getElementById(screenId).classList.add('active-screen');
+    
+    if(screenId === 'screen-game') {
+        score = 0;
+        current = 0;
+        // Restaura a estrutura padrão caso o jogo tenha sido concluído anteriormente
+        document.getElementById("screen-game").innerHTML = `
+            <h1>🎮 TREINAMENTO</h1>
+            <h2 id="question"></h2>
+            <div id="explanation"></div>
+            <div id="answers"></div>
+            <button id="next" onclick="nextQuestion()">Próxima Missão ➔</button>
+            <div id="score" style="margin-top: 20px;">Pontos: 0</div>
+            <button class="btn-back" onclick="goToMenu()">↩ Voltar ao Menu</button>
+        `;
+        loadQuestion();
+    }
+}
+
+function goToMenu() {
+    changeScreen('screen-menu');
+}
+
+let score = 0;
+let current = 0;
+
+const quiz = [
+    {
+        question: "Uma pessoa engasgou ao seu lado, levou as mãos ao pescoço e NÃO consegue emitir som. O que fazer?",
+        explanation: "💡 Se a pessoa não emite som, o engasgo é total. Ligue 192 e faça a Manobra de Heimlich (pressão na boca do estômago para dentro e para cima).",
+        answers: [
+            {text: "Ligar para o SAMU (192) e iniciar a Manobra de Heimlich", correct: true},
+            {text: "Dar socos fortes nas costas dela imediatamente", correct: false},
+            {text: "Dar um copo d'água para ela beber devagar", correct: false}
+        ]
+    },
+    {
+        question: "Uma pessoa cortou a mão com uma faca e está sangrando muito. O que fazer primeiro?",
+        explanation: "💡 Pressione o local com um pano limpo para estancar o sangramento. Nunca jogue pó de café, pois causa infecções graves.",
+        answers: [
+            {text: "Jogar pó de café no ferimento", correct: false},
+            {text: "Lavar o corte e fazer compressão direta com pano limpo", correct: true},
+            {text: "Passar pasta de dente para fechar o corte", correct: false}
+        ]
+    },
+    {
+        question: "Um idoso sente uma dor forte no peito que vai para o braço esquerdo e está suando frio. O que fazer?",
+        explanation: "💡 Esses são sintomas clássicos de Infarto (Ataque Cardíaco). Ligue para o SAMU (192) imediatamente e mantenha a pessoa calma e sentada.",
+        answers: [
+            {text: "Ligar para o SAMU (192) imediatamente", correct: true},
+            {text: "Pedir para ele caminhar para o sangue circular", correct: false},
+            {text: "Dar um copo de água com açúcar", correct: false}
+        ]
+    },
+    {
+        question: "Alguém começa a ter uma convulsão (debater-se no chão). Qual a atitude correta?",
+        explanation: "💡 Proteja a cabeça da vítima com algo macio e vire-a de lado para não engasgar com a saliva. NUNCA tente segurar a língua dela!",
+        answers: [
+            {text: "Colocar um objecto ou o dedo na boca dela para segurar a língua", correct: false},
+            {text: "Segurar os braços da pessoa com força para ela parar", correct: false},
+            {text: "Proteger a cabeça com algo macio e virá-la de lado", correct: true}
+        ]
+    },
+    {
+        question: "Uma pessoa foi picada por uma cobra no pé durante uma trilha. O que fazer?",
+        explanation: "💡 Lave apenas com água e sabão e leve a vítima deitada ao hospital. NUNCA faça torniquetes ou tente 'sugar' o veneno, isso piora a situação.",
+        answers: [
+            {text: "Lavar com água e sabão e manter a vítima em repouso até o hospital", correct: true},
+            {text: "Fazer um torniquete (amarrar forte) acima da picada", correct: false},
+            {text: "Cortar o local e sugar o veneno com a boca", correct: false}
+        ]
+    },
+    {
+        question: "Uma pessoa do seu lado de repente fica com a boca torta, não consegue levantar um dos braços e fala de forma confusa. O que está acontecendo?",
+        explanation: "💡 Estes são os 3 sinais clássicos de um AVC (Acidente Vascular Cerebral). Cada minuto conta! Ligue imediatamente para o 192.",
+        answers: [
+            {text: "É um sinal de AVC. Ligue para o SAMU (192) imediatamente", correct: true},
+            {text: "A pressão dela baixou. Dê algo salgado para comer", correct: false},
+            {text: "Ela está apenas cansada. Peça para se deitar e dormir", correct: false}
+        ]
+    },
+    {
+        question: "Alguém caiu e está com suspeita de fratura na perna (dor intensa e local inchado). O que fazer?",
+        explanation: "💡 Nunca tente 'colocar o osso no lugar'. Imobilize a perna na posição em que ela está, usando talas improvisadas (papelão, revistas) sem apertar muito.",
+        answers: [
+            {text: "Puxar a perna com força para alinhar o osso", correct: false},
+            {text: "Massagear o local com pomada para dor", correct: false},
+            {text: "Imobilizar o membro na posição atual e chamar o socorro", correct: true}
+        ]
+    },
+    {
+        question: "Ao presenciar alguém sofrendo um choque elétrico numa tomada caseira, qual a primeira ação?",
+        explanation: "💡 Nunca toque na vítima enquanto ela estiver em contato com a corrente elétrica, ou você também levará o choque. Desligue a energia primeiro.",
+        answers: [
+            {text: "Desligar o disjuntor geral ou a chave de energia imediatamente", correct: true},
+            {text: "Puxar a pessoa pelos braços para afastá-la da tomada", correct: false},
+            {text: "Jogar água na tomada para apagar possíveis faíscas", correct: false}
+        ]
+    },
+    {
+        question: "Após passar horas ao sol, uma pessoa apresenta pele muito quente e seca, dor de cabeça e confusão mental (Insolação). O que fazer?",
+        explanation: "💡 A insolação grave é uma emergência médica. Mude a pessoa para um local fresco, aplique compressas frias e ligue para o 192.",
+        answers: [
+            {text: "Dar bebidas alcoólicas bem frias para refrescar rápido", correct: false},
+            {text: "Levar para um local fresco, resfriar o corpo com panos úmidos e dar água se estiver consciente", correct: true},
+            {text: "Abafá-la com cobertores para ela suar o calor para fora", correct: false}
+        ]
+    },
+    {
+        question: "Uma pessoa sofreu um acidente e está com um pedaço de vidro ou ferro cravado (empalado) na perna. O que fazer?",
+        explanation: "💡 Nunca remova um objeto penetrante! Ele pode estar estancando uma artéria. Deixe-o fixo no lugar e proteja-o até chegar ao hospital.",
+        answers: [
+            {text: "Puxar o objeto rapidamente para poder lavar o ferimento", correct: false},
+            {text: "NÃO remover o objeto, imobilizá-lo e procurar atendimento médico", correct: true},
+            {text: "Mexer no objeto de um lado para o outro para ver se está solto", correct: false}
+        ]
+    },
+    {
+        question: "Um bebê com menos de 1 ano engasgou com um brinquedo pequeno e não consegue chorar ou tossir. Como agir?",
+        explanation: "💡 Em bebês usa-se a Manobra de Desengasgo Pediátrica: deite o bebê de bruços no seu antebraço, com a cabeça mais baixa que o corpo, e dê 5 batidas firmes entre as escápulas nas costas.",
+        answers: [
+            {text: "Colocar o bebê de bruços no braço e dar 5 pancadas firmes nas costas", correct: true},
+            {text: "Segurar o bebê pelas pernas de cabeça para baixo e chacoalhar", correct: false},
+            {text: "Tentar puxar o objeto às cegas colocando o dedo no fundo da garganta", correct: false}
+        ]
+    },
+    {
+        question: "O nariz de uma criança começou a sangrar muito de repente. Qual a posição correta para colocá-la?",
+        explanation: "💡 Incline a cabeça ligeiramente para FRENTE e aperte as narinas. Inclinar para trás faz o sangue ir para o estômago ou pulmões, causando vômito ou asfixia.",
+        answers: [
+            {text: "Inclinar a cabeça para trás para o sangue parar de descer", correct: false},
+            {text: "Inclinar a cabeça para a frente e pressionar o nariz por alguns minutos", correct: true},
+            {text: "Deitar a criança de costas sem travesseiro", correct: false}
+        ]
+    },
+    {
+        question: "Alguém caiu de uma altura de 3 metros, está consciente, mas reclama de muita dor nas costas. O que fazer?",
+        explanation: "💡 Há alto risco de lesão na coluna/medula. Movimentar a vítima pode causar paralisia permanente. Mantenha-a imóvel e chame o Corpo de Bombeiros (193).",
+        answers: [
+            {text: "Ajudar a pessoa a levantar devagar e caminhar até um banco", correct: false},
+            {text: "NÃO movimentar a pessoa e chamar o resgate (192/193) imediatamente", correct: true},
+            {text: "Colocá-la no banco de trás de um carro comum para ir ao hospital rápido", correct: false}
+        ]
+    },
+    {
+        question: "Uma pessoa foi mordida por um cachorro de rua no braço. O que fazer de imediato?",
+        explanation: "💡 Lave imediatamente com água corrente e sabão por vários minutos para remover as bactérias e o vírus da raiva presentes na saliva. Procure um posto de saúde.",
+        answers: [
+            {text: "Lavar abundantemente com água e sabão e procurar um médico", correct: true},
+            {text: "Colocar pó de café ou folhas de plantas para cicatrizar", correct: false},
+            {text: "Cobrir o ferimento firmemente com plástico filme sem lavar", correct: false}
+        ]
+    },
+    {
+        question: "Uma pessoa que comeu amendoim começa a ter o rosto inchado, placas vermelhas na pele e muita falta de ar. O que fazer?",
+        explanation: "💡 Trata-se de um Choque Anafilático (reação alérgica grave). É uma emergência médica gravíssima que fecha as vias aéreas. Ligue 192 na hora.",
+        answers: [
+            {text: "Dar um antialérgico em gotas e esperar 1 hora para ver se melhora", correct: false},
+            {text: "Chamar o SAMU (192) imediatamente, pois é uma reação alérgica grave", correct: true},
+            {text: "Pedir para a pessoa beber leite para cortar o efeito", correct: false}
+        ]
+    },
+    {
+        question: "Uma criança pequena bebeu acidentalmente um produto de limpeza (cloro). O que você deve fazer?",
+        explanation: "💡 NUNCA force o vômito em caso de ingestão de produtos químicos corrosivos, pois o produto queima a garganta ao subir novamente. Ligue para o SAMU (192).",
+        answers: [
+            {text: "Forçar a criança a vomitar imediatamente colocando o dedo na garganta", correct: false},
+            {text: "Dar bastante leite ou água com vinagre para neutralizar", correct: false},
+            {text: "Não provocar vômito, identificar o produto e ligar para o socorro médico", correct: true}
+        ]
+    },
+    {
+        question: "Uma pessoa desmaiou após ficar muito tempo em pé no calor. Ela já está deitada no chão e respirando. Como ajudar a acordar?",
+        explanation: "💡 Elevar as pernas da vítima a cerca de 30 cm ajuda o sangue a retornar mais rápido para o cérebro, acelerando a recuperação do desmaio comum.",
+        answers: [
+            {text: "Elevar as pernas da vítima a cerca de 30 centímetros do chão", correct: true},
+            {text: "Dar pequenos tapas no rosto dela até ela abrir os olhos", correct: false},
+            {text: "Esfregar álcool diretamente no nariz dela", correct: false}
+        ]
+    },
+    {
+        question: "Um produto químico de limpeza espirrou direto nos olhos de um trabalhador. Qual a conduta correta?",
+        explanation: "💡 Lave o olho aberto com água corrente de forma contínua por pelo menos 15 a 20 minutos para remover o produto. Não use colírios sem orientação médica.",
+        answers: [
+            {text: "Lavar o olho aberto com água corrente de forma contínua por 15 a 20 minutos", correct: true},
+            {text: "Pingar qualquer colírio que tiver em casa para acalmar a ardência", correct: false},
+            {text: "Manter o olho fechado e colocar uma compressa quente por cima", correct: false}
+        ]
+    },
+    {
+        question: "Durante um jogo de futebol, um jogador teve uma fratura exposta no braço (o osso quebrou e rasgou a pele). O que fazer?",
+        explanation: "💡 Nunca tente empurrar o osso para dentro! Cubra o ferimento delicadamente com um pano limpo ou gaze para evitar contaminação e chame o resgate.",
+        answers: [
+            {text: "Tentar empurrar o osso para dentro antes que infeccione", correct: false},
+            {text: "Lavar com álcool em gel diretamente sobre o osso exposto", correct: false},
+            {text: "Não mexer no osso, cubrir o ferimento com um pano limpo e chamar socorro", correct: true}
+        ]
+    },
+    {
+        question: "Em um dia muito quente, uma criança pequena apresenta boca seca, choro sem lágrimas e olhos fundos. O que isso indica?",
+        explanation: "💡 Estes são sinais claros de desidratação grave. Ofereça soro caseiro ou água mineral em pequenos goles e busque atendimento médico imediatamente.",
+        answers: [
+            {text: "Sinais de desidratação. Oferecer líquidos (água/soro) e buscar orientação médica", correct: true},
+            {text: "Insolação leve. Basta passar um pano úmido na testa e deixá-la dormir", correct: false},
+            {text: "Fome extrema. Deve-se dar uma refeição pesada imediatamente", correct: false}
+        ]
+    }
+];
+
+function loadQuestion(){
+    const q = quiz[current];
+    document.getElementById("question").innerHTML = q.question;
+    document.getElementById("explanation").style.display = "none";
+    
+    const answers = document.getElementById("answers");
+    answers.innerHTML = "";
+
+    q.answers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.innerHTML = answer.text;
+        btn.onclick = () => select(btn, answer.correct);
+        answers.appendChild(btn);
+    });
+
+    document.getElementById("next").style.display = "none";
+    document.getElementById("score").innerHTML = "Pontos: " + score;
+}
+
+function select(button, correct){
+    const buttons = document.querySelectorAll("#answers button");
+    buttons.forEach(b => b.disabled = true);
+
+    const q = quiz[current];
+    const expDiv = document.getElementById("explanation");
+    expDiv.innerHTML = q.explanation;
+    expDiv.style.display = "block";
+
+    if(correct){
+        button.className = "correct";
+        score += 100;
+    } else {
+        button.className = "wrong";
+        buttons.forEach((b, index) => {
+            if(q.answers[index].correct) b.className = "correct";
+        });
+    }
+
+    document.getElementById("score").innerHTML = "Pontos: " + score;
+    document.getElementById("next").style.display = "block";
+}
+
+function nextQuestion(){
+    current++;
+    if(current >= quiz.length){
+        document.getElementById("screen-game").innerHTML = `
+            <h1>🏆 Treinamento Concluído!</h1>
+            <h2>Você terminou todas as 20 missões.</h2>
+            <h1 style="font-size: 48px; color: #FFEB3B;">${score} pts</h1>
+            <button onclick="location.reload()">Voltar ao Início</button>
+        `;
+        return;
+    }
+    loadQuestion();
+}
+</script>
+
+</body>
+</html>
