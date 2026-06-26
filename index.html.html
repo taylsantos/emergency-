@@ -1,13 +1,15 @@
-
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOS HERO - App</title>
+<title>SOS HERO - Global Edition</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
 
 <style>
-/* 1. CONFIGURAÇÕES DE APP MOBILE */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,9 +26,9 @@ body {
 .app-container {
     max-width: 450px;
     width: 90%;
-    height: 90vh;
+    height: 95vh;
     margin: auto;
-    padding: 20px;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 30px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
@@ -35,24 +37,22 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    box-sizing: border-box;
 }
 
-/* Gerenciamento de Telas */
 .screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
 .active-screen { display: flex; }
 
-/* Tipografia */
-h1 { font-size: 26px; margin: 10px 0; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-h2 { font-size: 18px; margin: 15px 0; }
-p { font-size: 14px; opacity: 0.9; line-height: 1.4; margin: 5px 0; }
+h1 { font-size: 24px; margin: 5px 0; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+h2 { font-size: 16px; margin: 10px 0; }
+p { font-size: 13px; opacity: 0.9; line-height: 1.4; margin: 3px 0; }
 
-/* Botões Estilizados */
 button {
     display: block;
     width: 100%;
-    margin: 10px 0;
-    padding: 16px;
-    font-size: 16px;
+    margin: 6px 0;
+    padding: 12px;
+    font-size: 14px;
     font-weight: bold;
     border: none;
     border-radius: 15px;
@@ -62,117 +62,51 @@ button {
     color: #1e3c72;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
 button:active { transform: scale(0.96); }
 
 .btn-menu-play { background: #4CAF50; color: white; }
 .btn-menu-games { background: #E91E63; color: white; }
 .btn-menu-sos { background: #FF9800; color: white; }
-.btn-back { background: rgba(255,255,255,0.2); color: white; margin-top: auto; }
+.btn-panic { background: #E53935; color: white; font-size: 16px; font-weight: 900; animation: blink 0.6s infinite alternate; }
+.btn-back { background: rgba(255,255,255,0.2); color: white; margin-top: auto; padding: 10px; }
 
-/* Grid de Mini-Jogos */
-.games-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 15px;
-}
+@keyframes blink { from { box-shadow: 0 0 10px #E53935; } to { box-shadow: 0 0 22px #E53935; transform: scale(1.01); } }
 
-.game-card {
-    background: rgba(0,0,0,0.3);
-    padding: 15px;
-    border-radius: 20px;
-    border-bottom: 4px solid #E91E63;
-    cursor: pointer;
-}
-.game-card span { font-size: 24px; display:block; margin-bottom: 5px;}
+/* Configurações Globais (Bandeiras e Dificuldade) */
+.config-row { display: flex; justify-content: center; gap: 10px; margin: 8px 0; }
+.lang-btn { font-size: 20px; background: none; box-shadow: none; width: auto; padding: 5px; margin: 0; }
+.diff-select { background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px; border-radius: 10px; font-weight: bold; font-size: 13px; outline: none; }
 
-/* MECÂNICA ESTILO TINDER (SWIPE CARD) */
-.tinder-box {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin: 20px 0;
-}
+.games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; overflow-y: auto; flex-grow: 1; padding-bottom: 5px; }
+.game-card { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 15px; border-bottom: 3px solid #E91E63; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.game-card span { font-size: 20px; margin-bottom: 2px; }
+.game-card strong { font-size: 11px; }
 
-.tinder-card {
-    width: 85%;
-    height: 200px;
-    background: linear-gradient(135deg, #ff007f, #7928ca);
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    position: absolute;
-}
+.medal-box { display: flex; justify-content: center; gap: 8px; margin: 5px 0; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 15px; }
+.medal { font-size: 22px; opacity: 0.2; filter: grayscale(100%); transition: all 0.3s; }
+.medal-unlocked { opacity: 1 !important; filter: grayscale(0%) !important; transform: scale(1.1); }
 
-.tinder-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 15px;
-}
-.btn-tinder-left { background: #C62828; color: white; font-size: 24px; border-radius: 50%; width: 65px; height: 65px; padding:0; }
-.btn-tinder-right { background: #2E7D32; color: white; font-size: 24px; border-radius: 50%; width: 65px; height: 65px; padding:0; }
+.game-canvas { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 15px; margin: 8px 0; position: relative; height: 150px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.avc-face { font-size: 50px; cursor: pointer; position: absolute; }
+.fire-object { font-size: 45px; animation: wave 0.5s infinite alternate; }
+@keyframes wave { from { transform: translateY(0); } to { transform: translateY(-8px); } }
 
-/* MECÂNICA DA MALETA DE ITENS */
-.maleta-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    overflow-y: auto;
-    max-height: 280px;
-    padding: 5px;
-}
-.item-checkbox {
-    background: rgba(255,255,255,0.15);
-    padding: 12px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: bold;
-    transition: background 0.2s;
-    border: 2px solid transparent;
-}
-.item-selected {
-    background: #FF9800 !important;
-    color: white !important;
-    border-color: white;
-}
+.dot-node { width: 30px; height: 30px; background: #FF9800; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; position: absolute; z-index: 5; }
 
-/* MINI-JOGO DE DESENGASGO (HEIMLICH) */
-.choke-visual-box {
-    background: rgba(0,0,0,0.4);
-    border-radius: 20px;
-    padding: 20px;
-    margin: 15px 0;
-    position: relative;
-    height: 160px;
-}
-.victim-avatar { font-size: 55px; display: block; margin-top: 20px; transition: transform 0.2s; }
-.airway-object {
-    font-size: 22px;
-    position: absolute;
-    top: 55px;
-    left: 52%;
-    transform: translateX(-50%);
-    transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
+.tinder-box { flex-grow: 1; display: flex; align-items: center; justify-content: center; position: relative; margin: 10px 0; }
+.tinder-card { width: 85%; height: 150px; background: linear-gradient(135deg, #ff007f, #7928ca); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; transition: transform 0.4s ease, opacity 0.4s ease; position: absolute; }
+.tinder-buttons { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 5px; }
+.btn-tinder-left { background: #C62828; color: white; font-size: 20px; border-radius: 50%; width: 50px; height: 50px; padding:0; }
+.btn-tinder-right { background: #2E7D32; color: white; font-size: 20px; border-radius: 50%; width: 50px; height: 50px; padding:0; }
 
-/* Elementos Gerais */
-#action-zone { margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.15); border-radius: 15px; display: none; }
-.btn-emergency { background: #ff5252; color: white; animation: pulse 0.8s infinite alternate; }
-@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+.maleta-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; overflow-y: auto; max-height: 180px; padding: 5px; }
+.item-checkbox { background: rgba(255,255,255,0.15); padding: 8px; border-radius: 12px; cursor: pointer; font-size: 11px; font-weight: bold; }
+.item-selected { background: #FF9800 !important; border: 1px solid white; }
+
+#action-zone { margin: 5px 0; padding: 8px; background: rgba(255,255,255,0.15); border-radius: 15px; display: none; }
 .guide-list { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
-.guide-box { background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; text-align: left; margin-bottom: 10px; border-left: 4px solid #FF9800; }
-.guide-box h3 { margin: 0 0 5px; font-size: 16px; color: #FFEB3B; }
+.guide-box { background: rgba(0,0,0,0.25); padding: 10px; border-radius: 12px; text-align: left; margin-bottom: 8px; border-left: 4px solid #FF9800; }
+.guide-box h3 { margin: 0 0 3px; font-size: 14px; color: #FFEB3B; }
 .correct { background: #2E7D32 !important; color: white !important; }
 .wrong { background: #C62828 !important; color: white !important; }
 </style>
@@ -181,288 +115,488 @@ button:active { transform: scale(0.96); }
 
 <div class="app-container">
 
+    <div class="config-row" id="global-config">
+        <button class="lang-btn" onclick="setLanguage('pt')">🇧🇷</button>
+        <button class="lang-btn" onclick="setLanguage('en')">🇺🇸</button>
+        <button class="lang-btn" onclick="setLanguage('es')">🇪🇸</button>
+        <select id="diff-select" class="diff-select" onchange="setDifficulty()">
+            <option value="easy" id="opt-easy">🟢 Fácil</option>
+            <option value="medium" id="opt-medium" selected>🟡 Médio</option>
+            <option value="hard" id="opt-hard">🔴 Difícil</option>
+        </select>
+    </div>
+
     <div id="screen-menu" class="screen active-screen">
-        <div style="margin-top: 20px;">
-            <span style="font-size: 50px;">🚑</span>
-            <h1>SOS HERO</h1>
-            <p>Treine, jogue e salve vidas.</p>
+        <div style="margin-top: 5px;">
+            <span style="font-size: 40px;">🚑</span>
+            <h1 id="menu-title">SOS HERO</h1>
+            <p id="menu-subtitle">O aplicativo definitivo que salva vidas</p>
         </div>
-        <div style="margin-top: 30px;">
-            <button class="btn-menu-play" onclick="changeScreen('screen-game')">🎮 QUIZ DE SIMULAÇÃO</button>
-            <button class="btn-menu-games" onclick="changeScreen('screen-games-menu')">🕹️ MINI-JOGOS</button>
-            <button class="btn-menu-sos" onclick="changeScreen('screen-sos')">🚨 GUIA SOS RÁPIDO</button>
+        
+        <button class="btn-panic" id="btn-panic" onclick="startPanicMode()">🚨 SOS AGORA (EMERGÊNCIA)</button>
+
+        <div style="margin-top: 10px;">
+            <button class="btn-menu-play" id="btn-menu-play" onclick="changeScreen('screen-game')">🎮 QUIZ DE SIMULAÇÃO</button>
+            <button class="btn-menu-games" id="btn-menu-games" onclick="changeScreen('screen-games-menu')">🕹️ CENTRAL DE MINI-JOGOS</button>
+            <button class="btn-menu-sos" id="btn-menu-sos" onclick="changeScreen('screen-sos')">🚨 GUIA SOS / VOZ</button>
         </div>
-        <p style="margin-top: auto; font-size: 12px; opacity: 0.5;">v3.5 - Heimlich Edition</p>
+        <p style="margin-top: auto; font-size: 10px; opacity: 0.5;">SOS HERO Multilingual v5.5</p>
+    </div>
+
+    <div id="screen-panic" class="screen">
+        <h1 style="color:#ff5252;" id="panic-title">🚨 MODO EMERGÊNCIA</h1>
+        <div style="font-size: 22px; font-weight: bold; margin: 5px; color:#ff5252;" id="panic-timer">00:00</div>
+        <div class="guide-box" style="border-left-color: #ff5252; text-align: center; background: rgba(0,0,0,0.4);">
+            <h3 id="panic-step-title" style="color:white; font-size:18px;">Passo 1</h3>
+            <p id="panic-step-desc" style="font-size:14px; font-weight:bold;">Avaliando...</p>
+        </div>
+        <p id="panic-gps" style="color:#FFEB3B; font-weight:bold; font-size:12px;">📍 Buscando GPS...</p>
+        <button onclick="nextPanicStep()" id="btn-panic-next" style="background:#4CAF50; color:white;">➔ Próxima Instrução</button>
+        <button style="background:#C62828; color:white;" id="btn-panic-call">📞 LIGAR PARA EMERGÊNCIA</button>
+        <button class="btn-back" id="btn-panic-back" onclick="stopPanicMode()">↩ Cancelar</button>
     </div>
 
     <div id="screen-games-menu" class="screen">
-        <h1>🕹️ MINI-JOGOS</h1>
-        <p>Escolha um desafio interativo!</p>
-        <div class="games-grid">
-            <div class="game-card" onclick="startRhythmGame()">
-                <span>❤️</span>
-                <strong>Ritmo RCP</strong>
-                <small style="display:block; font-size:10px; opacity:0.7;">Treine os 110 BPM</small>
-            </div>
-            <div class="game-card" onclick="startTinderGame()">
-                <span>🔥</span>
-                <strong>Certo ou Mito</strong>
-                <small style="display:block; font-size:10px; opacity:0.7;">Estilo Tinder Swipe</small>
-            </div>
-            <div class="game-card" onclick="startChokeGame()" style="grid-column: span 2; border-bottom-color: #4CAF50;">
-                <span>🥖</span>
-                <strong>Salva-Vidas Heimlich</strong>
-                <small style="display:block; font-size:10px; opacity:0.7;">Pressione rápido para expelir o objeto!</small>
-            </div>
-            <div class="game-card" onclick="startMaletaGame()" style="grid-column: span 2;">
-                <span>💼</span>
-                <strong>Monte a Maleta SOS</strong>
-                <small style="display:block; font-size:10px; opacity:0.7;">Organize o kit de primeiros socorros ideal</small>
-            </div>
+        <h1 id="games-menu-title">🕹️ MINI-JOGOS</h1>
+        
+        <div class="medal-box">
+            <span id="medal-rcp" class="medal" title="RCP">❤️</span>
+            <span id="medal-tinder" class="medal" title="Mitos">🛡️</span>
+            <span id="medal-heimlich" class="medal" title="Heimlich">🥖</span>
+            <span id="medal-maleta" class="medal" title="Maleta">💼</span>
+            <span id="medal-avc" class="medal" title="AVC">🧠</span>
+            <span id="medal-fire" class="medal" title="Fogo">🧯</span>
+            <span id="medal-wrap" class="medal" title="Curativo">🩹</span>
+            <span id="medal-triage" class="medal" title="Triagem">🔀</span>
         </div>
-        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Voltar ao Menu</button>
+
+        <div class="games-grid">
+            <div class="game-card" onclick="startRhythmGame()"><span>❤️</span><strong id="g1-title">Ritmo RCP</strong></div>
+            <div class="game-card" onclick="startTinderGame()"><span>🔥</span><strong id="g2-title">Certo ou Mito</strong></div>
+            <div class="game-card" onclick="startChokeGame()"><span>🥖</span><strong id="g3-title">Heimlich</strong></div>
+            <div class="game-card" onclick="startMaletaGame()"><span>💼</span><strong id="g4-title">Montar Maleta</strong></div>
+            <div class="game-card" onclick="startAvcGame()"><span>🧠</span><strong id="g5-title">Olho Clínico AVC</strong></div>
+            <div class="game-card" onclick="startFireGame()"><span>🧯</span><strong id="g6-title">Extintor Certo</strong></div>
+            <div class="game-card" onclick="startWrapGame()"><span>🩹</span><strong id="g7-title">Curativo Prático</strong></div>
+            <div class="game-card" onclick="startTriageGame()"><span>🔀</span><strong id="g8-title">Triagem de Crise</strong></div>
+        </div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-menu')">↩ Voltar</button>
     </div>
 
     <div id="screen-rhythm-game" class="screen">
-        <h1>❤️ RITMO RCP</h1>
-        <p>Toque no coração seguindo o ritmo correto!</p>
-        <div id="rhythm-feedback" style="font-size: 18px; font-weight: bold; margin: 15px; height: 25px;">Aguardando...</div>
-        <div id="rhythm-target" onclick="processRhythmClick()" style="width:110px; height:110px; background:#ff5252; border-radius:50%; margin: 15px auto; display:flex; align-items:center; justify-content:center; font-size:35px; cursor:pointer; border: 5px solid white;">❤️</div>
-        <div id="rhythm-score">Pontos: 0 / 20</div>
-        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Desistir</button>
+        <h1 id="g1-header">❤️ RITMO RCP</h1>
+        <div id="rhythm-feedback" style="font-size:16px; font-weight:bold; height:20px; color:#FFEB3B;">...</div>
+        <div id="rhythm-target" onclick="processRhythmClick()" style="width:90px; height:90px; background:#ff5252; border-radius:50%; margin: 15px auto; display:flex; align-items:center; justify-content:center; font-size:30px; cursor:pointer; border: 4px solid white;">❤️</div>
+        <div id="rhythm-score">0 / 20</div>
+        <button class="btn-back btn-global-back" onclick="clearInterval(metronomeInterval); changeScreen('screen-games-menu')">↩ Voltar</button>
     </div>
 
     <div id="screen-tinder-game" class="screen">
-        <h1>🔥 CERTO OU MITO?</h1>
-        <p>Arrastar para <b>Esquerda (❌ Mito)</b> ou <b>Direita (🟢 Certo)</b>!</p>
-        <div class="tinder-box">
-            <div id="tinder-card" class="tinder-card">
-                <span id="tinder-emoji" style="font-size: 40px; margin-bottom: 10px;">🩹</span>
-                <b id="tinder-text" style="font-size: 16px;">Carregando...</b>
-            </div>
-        </div>
-        <div class="tinder-buttons">
-            <button class="btn-tinder-left" onclick="swipeTinder(false)">❌</button>
-            <button class="btn-tinder-right" onclick="swipeTinder(true)">🟢</button>
-        </div>
-        <div id="tinder-score">Pontuação: 0</div>
-        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Desistir</button>
+        <h1 id="g2-header">🔥 CERTO OU MITO?</h1>
+        <div class="tinder-box"><div id="tinder-card" class="tinder-card"><span id="tinder-emoji" style="font-size:35px;">🩹</span><b id="tinder-text" style="font-size:14px;">...</b></div></div>
+        <div class="tinder-buttons"><button class="btn-tinder-left" onclick="swipeTinder(false)">❌</button><button class="btn-tinder-right" onclick="swipeTinder(true)">🟢</button></div>
+        <div id="tinder-score">0</div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
     </div>
 
     <div id="screen-maleta-game" class="screen">
-        <h1>💼 MONTE A MALETA</h1>
-        <p>Selecione apenas os itens que **DEVEM** estar em uma maleta básica.</p>
+        <h1 id="g4-header">💼 MONTE A MALETA</h1>
         <div id="maleta-container" class="maleta-list"></div>
-        <button onclick="concludeMaleta()" style="background:#4CAF50; color:white; margin-top:15px;">🎒 Fechar e Avaliar Maleta</button>
-        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
+        <button onclick="concludeMaleta()" id="btn-maleta-eval" style="background:#4CAF50; color:white; margin-top:5px;">🎒 Avaliar Kit</button>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
     </div>
 
     <div id="screen-choke-game" class="screen">
-        <h1>🥖 SALVA-VIDAS HEIMLICH</h1>
-        <p>O paciente está engasgado com um pedaço de comida! Clique rápido no botão para aplicar pressão na boca do estômago!</p>
-        <div class="choke-visual-box">
-            <span id="victim-face" class="victim-avatar">🤢</span>
-            <span id="choke-food" class="airway-object">🥩</span>
+        <h1 id="g3-header">🥖 SALVA-VIDAS HEIMLICH</h1>
+        <div class="choke-visual-box"><span id="victim-face" class="victim-avatar">🤢</span><span id="choke-food" class="airway-object">🥩</span></div>
+        <div id="choke-status" style="font-size:14px; font-weight:bold; color:#FFEB3B;">...</div>
+        <button id="btn-heimlich-action" onclick="applyHeimlichThrust()" style="background: #E53935; color: white;">🔺 MANOBRA (0/5)</button>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
+    </div>
+
+    <div id="screen-avc-game" class="screen">
+        <h1 id="g5-header">🧠 OLHO CLÍNICO AVC</h1>
+        <p><span id="lbl-time">Tempo:</span> <span id="avc-timer">15</span>s</p>
+        <div class="game-canvas" id="avc-canvas" style="height:180px;"></div>
+        <div id="avc-score" style="font-weight:bold;">0 / 5</div>
+        <button class="btn-back btn-global-back" onclick="clearInterval(avcInterval); changeScreen('screen-games-menu')">↩ Voltar</button>
+    </div>
+
+    <div id="screen-fire-game" class="screen">
+        <h1 id="g6-header">🧯 CONTROLE DO FOGO</h1>
+        <p id="fire-scen">...</p>
+        <div class="game-canvas"><span id="fire-icon" class="fire-object">🔥</span><span style="font-size:30px; position:absolute; bottom:10px; left:20px;" id="fire-item">🔌</span></div>
+        <div id="fire-status" style="font-weight:bold; margin-bottom:5px; color:#FFEB3B;">...</div>
+        <button id="btn-fire-lacre" onclick="breakLacre()" style="background:#FF9800; color:white; padding:10px;">🔓 Romper Lacre</button>
+        <div id="extinguishers" style="display:none; gap:5px; width:100%;"><button onclick="useExtinct(1)" id="btn-ext-co2" style="background:#E53935; color:white; margin:0;">🧯 CO2</button><button onclick="useExtinct(2)" id="btn-ext-water" style="background:#2196F3; color:white; margin:0;">🧯 ÁGUA</button></div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
+    </div>
+
+    <div id="screen-wrap-game" class="screen">
+        <h1 id="g7-header">🩹 MESTRE DOS CURATIVOS</h1>
+        <div class="game-canvas" id="wrap-canvas" style="height:170px;">
+            <div style="font-size:80px; transform:rotate(-15deg); opacity:0.3;">🦾</div>
+            <div id="node1" class="dot-node" style="top:30px; left:70px;" onclick="clickNode(1)">1</div>
+            <div id="node2" class="dot-node" style="top:80px; left:180px;" onclick="clickNode(2)">2</div>
+            <div id="node3" class="dot-node" style="top:110px; left:280px;" onclick="clickNode(3)">3</div>
         </div>
-        <div id="choke-status" style="font-size: 16px; font-weight: bold; margin: 10px; color:#FFEB3B;">Vias aéreas obstruídas!</div>
-        <button id="btn-heimlich-action" onclick="applyHeimlichThrust()" style="background: #E53935; color: white; font-size: 18px;">🔺 APLICAR MANOBRA (0/5)</button>
-        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Desistir</button>
+        <div id="wrap-status" style="font-weight:bold; color:#FFEB3B;">...</div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
+    </div>
+
+    <div id="screen-triage-game" class="screen">
+        <h1 id="g8-header">🔀 TRIAGEM DE CRISE</h1>
+        <div style="display:flex; flex-direction:column; gap:8px; margin:15px 0;" id="triage-options"></div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
     </div>
 
     <div id="screen-game" class="screen">
         <h1 id="quiz-header">🎮 MISSÃO</h1>
         <h2 id="question"></h2>
-        <div id="explanation" style="font-size: 14px; color: #FFEB3B; margin-bottom: 10px; display: none;"></div>
+        <div id="explanation" style="font-size: 13px; color: #FFEB3B; margin-bottom: 5px; display: none;"></div>
         <div id="action-zone"></div>
         <div id="answers" style="flex-grow: 1; overflow-y: auto;"></div>
-        <button id="next" onclick="nextQuestion()" style="background: #FF9800; color: white; display: none;">Próxima Missão ➔</button>
-        <div id="score-text" style="margin: 10px 0;">Pontos: 0</div>
-        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Menu</button>
+        <button id="next" onclick="nextQuestion()" style="background: #FF9800; color: white; display: none;">➔</button>
+        <div id="score-text" style="margin: 5px 0;">0</div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-menu')">↩ Menu</button>
     </div>
 
     <div id="screen-sos" class="screen">
-        <h1>🚨 GUIA RÁPIDO</h1>
-        <div class="guide-list">
-            <div class="guide-box"><h3>🥖 Engasgo</h3><p>Pressione a boca do estômago para dentro e para cima.</p></div>
-            <div class="guide-box"><h3>👶 Bebês</h3><p>5 batidas firmes nas costas com a cabeça inclinada para baixo.</p></div>
-            <div class="guide-box"><h3>🫀 Infarto</h3><p>Dor no peito, suor frio e náusea. Ligue 192.</p></div>
-            <div class="guide-box"><h3>🧠 AVC</h3><p>Peça para Sorrir, Abraçar e cantar uma Música.</p></div>
-            <div class="guide-box"><h3>🌪️ Convulsão</h3><p>Proteja a cabeça e vire de lado. Nunca segure a língua.</p></div>
-        </div>
-        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Voltar</button>
+        <h1 id="guide-header">🚨 GUIA RÁPIDO</h1>
+        <div class="guide-list" id="guide-container"></div>
+        <button class="btn-back btn-global-back" onclick="changeScreen('screen-menu')">↩ Voltar</button>
     </div>
 
 </div>
 
 <script>
-// --- NAVEGAÇÃO ---
+// --- BANCO DE TRADUÇÕES GLOBAL ---
+let currentLang = 'pt';
+let currentDiff = 'medium';
+
+const langData = {
+    pt: {
+        menuTitle: "SOS HERO", menuSubtitle: "O aplicativo definitivo que salva vidas", btnPanic: "🚨 SOS AGORA (EMERGÊNCIA)",
+        btnPlay: "🎮 QUIZ DE SIMULAÇÃO", btnGames: "🕹️ CENTRAL DE MINI-JOGOS", btnSos: "🚨 GUIA SOS / VOZ",
+        back: "↩ Voltar", easy: "🟢 Fácil", medium: "🟡 Médio", hard: "🔴 Difícil", score: "Pontos: ",
+        panicTitle: "🚨 MODO EMERGÊNCIA", panicNext: "➔ Próxima Instrução", panicCall: "📞 LIGAR EMERGÊNCIA", panicGps: "📍 Buscando GPS...",
+        gMenuTitle: "🕹️ MINI-JOGOS", g1: "Ritmo RCP", g2: "Certo ou Mito", g3: "Heimlich", g4: "Montar Maleta", g5: "Olho Clínico AVC", g6: "Extintor Certo", g7: "Curativo Prático", g8: "Triagem de Crise",
+        chokeObstr: "Vias aéreas obstruídas! Pressione!", chokeSucc: "🟢 Alimento expelido!", chokeBtn: "🔺 APLICAR MANOBRA",
+        lblTime: "Tempo: ", avcSave: "Salvos: ", fireScen: "Cenário: Fogo em uma tomada elétrica!", fireLacre: "Lacre Intacto! Rompa o lacre.", fireBtnLacre: "🔓 Romper Lacre", fireSucc: "🏅 Incêndio controlado!", fireErr: "💥 EXPLOSÃO! Nunca jogue água em rede elétrica!",
+        wrapWait: "Clique no ponto 1...", wrapNext: "Muito bem! Clique no ponto ", wrapErr: "❌ Ordem errada! Comece na base.",
+        maletaEval: "🎒 Avaliar Kit", triageQ: "Quem você deve atender EM PRIMEIRO LUGAR no acidente?",
+        triageA: "🧑 Vítima A: Chorando alto com braço quebrado.", triageB: "👨 Vítima B: Desmaiada e sem respirar.", triageC: "👧 Vítima C: Corte sangrando no dedo.",
+        triageErrA: "⚠️ Errado! Quem grita está respirando. Foque no silêncio.", triageErrC: "⚠️ Errado! Corte no dedo é leve perto de parada cardíaca.", triageSucc: "🏅 Perfeito! Parada respiratória silenciosa é prioridade máxima.",
+        quizHeader: "🎮 MISSÃO ", quizNext: "Próxima Missão ➔", pStep1T: "Passo 1: Avaliação", pStep1D: "Balance os ombros da vítima e chame alto. Veja se responde.", pStep1V: "Aperte os ombros da vítima e chame em voz alta.",
+        pStep2T: "Passo 2: Respiração", pStep2D: "Olhe para o peito dela por 5 segundos. Veja se sobe e desce.", pStep2V: "Olhe para o peito dela. Veja se sobe e desce.",
+        pStep3T: "Passo 3: Ajuda", pStep3D: "Se não respira, ligue para a emergência e bote no viva-voz.", pStep3V: "Ligue para a emergência imediatamente e ative o viva voz.",
+        gBox1T: "🥖 Engasgo 🔊", gBox1D: "Pressione a boca do estômago para dentro e para cima.",
+        gBox2T: "👶 Bebês 🔊", gBox2D: "5 batidas firmes nas costas com a cabeça inclinada para baixo.",
+        gBox3T: "🫀 Infarto 🔊", gBox3D: "Dor no peito, suor frio e náusea. Ligue para emergência.",
+        gBox4T: "🧠 AVC 🔊", gBox4D: "Peça para Sorrir, dar um Abraço e cantar uma Música."
+    },
+    en: {
+        menuTitle: "SOS HERO", menuSubtitle: "The ultimate life-saving app", btnPanic: "🚨 SOS NOW (EMERGENCY)",
+        btnPlay: "🎮 SIMULATION QUIZ", btnGames: "🕹️ MINI-GAMES HUB", btnSos: "🚨 SOS GUIDE / VOICE",
+        back: "↩ Back", easy: "🟢 Easy", medium: "🟡 Medium", hard: "🔴 Hard", score: "Score: ",
+        panicTitle: "🚨 EMERGENCY MODE", panicNext: "➔ Next Instruction", panicCall: "📞 CALL EMERGENCY", panicGps: "📍 Searching GPS...",
+        gMenuTitle: "🕹️ MINI-GAMES", g1: "CPR Rhythm", g2: "Fact or Myth", g3: "Heimlich", g4: "Build SOS Kit", g5: "Stroke Eye", g6: "Right Extinguisher", g7: "Wrap Practice", g8: "Crisis Triage",
+        chokeObstr: "Airway obstructed! Press!", chokeSucc: "🟢 Object expelled!", chokeBtn: "🔺 PERFORM MANEUVER",
+        lblTime: "Time: ", avcSave: "Saved: ", fireScen: "Scenario: Fire in an electrical outlet!", fireLacre: "Seal Intact! Break it first.", fireBtnLacre: "🔓 Break Seal", fireSucc: "🏅 Fire controlled!", fireErr: "💥 EXPLOSION! Never use water on electrical fire!",
+        wrapWait: "Click node 1...", wrapNext: "Great! Click node ", wrapErr: "❌ Wrong order! Start from the base.",
+        maletaEval: "🎒 Evaluate Kit", triageQ: "Who should you treat FIRST in the accident?",
+        triageA: "🧑 Victim A: Crying out loud with a broken arm.", triageB: "👨 Victim B: Passed out and not breathing.", triageC: "👧 Victim C: Bleeding cut on finger.",
+        triageErrA: "⚠️ Wrong! Crying means breathing. Focus on silence.", triageErrC: "⚠️ Wrong! Finger cut is minor compared to cardiac arrest.", triageSucc: "🏅 Perfect! Silent respiratory arrest is maximum priority.",
+        quizHeader: "🎮 MISSION ", quizNext: "Next Mission ➔", pStep1T: "Step 1: Assessment", pStep1D: "Shake victim's shoulders and shout. See if they respond.", pStep1V: "Shake victim's shoulders and shout. See if they respond.",
+        pStep2T: "Step 2: Breathing", pStep2D: "Look at the chest for 5 seconds. See if it rises and falls.", pStep2V: "Look at the chest for 5 seconds. See if it rises and falls.",
+        pStep3T: "Step 3: Call Help", pStep3D: "If not breathing, call emergency and put on speakerphone.", pStep3V: "If not breathing, call emergency immediately and use speakerphone.",
+        gBox1T: "🥖 Choking 🔊", gBox1D: "Press the abdomen inward and upward firmly.",
+        gBox2T: "👶 Infants 🔊", gBox2D: "5 firm back blows with head tilted downward.",
+        gBox3T: "🫀 Heart Attack 🔊", gBox3D: "Chest pain, cold sweat, and nausea. Call emergency.",
+        gBox4T: "🧠 Stroke 🔊", gBox4D: "Ask them to Smile, Hug, and repeat a simple sentence."
+    },
+    es: {
+        menuTitle: "SOS HERO", menuSubtitle: "La app definitiva para salvar vidas", btnPanic: "🚨 SOS AHORA (URGENCIA)",
+        btnPlay: "🎮 TRIVIA DE SIMULACIÓN", btnGames: "🕹️ CENTRAL DE MINI-JUEGOS", btnSos: "🚨 GUÍA SOS / VOZ",
+        back: "↩ Volver", easy: "🟢 Fácil", medium: "🟡 Medio", hard: "🔴 Difícil", score: "Puntos: ",
+        panicTitle: "🚨 MODO EMERGENCIA", panicNext: "➔ Próxima Instrucción", panicCall: "📞 LLAMAR URGENCIAS", panicGps: "📍 Buscando GPS...",
+        gMenuTitle: "🕹️ MINI-JUEGOS", g1: "Ritmo RCP", g2: "Hecho o Mito", g3: "Heimlich", g4: "Armar Maletín", g5: "Ojo Clínico ACV", g6: "Extintor Correcto", g7: "Vendaje Práctico", g8: "Triaje de Crisis",
+        chokeObstr: "¡Vía aérea obstruida! ¡Presiona!", chokeSucc: "¡🟢 Objeto expulsado!", chokeBtn: "🔺 APLICAR MANIOBRA",
+        lblTime: "Tiempo: ", avcSave: "Salvados: ", fireScen: "¡Escenario: Fuego en un enchufe eléctrico!", fireLacre: "¡Precinto Intacto! Rompe el precinto.", fireBtnLacre: "🔓 Romper Precinto", fireSucc: "🏅 ¡Incendio controlado!", fireErr: "¡💥 EXPLOSIÓN! ¡Nunca uses agua en fuego eléctrico!",
+        wrapWait: "Haz clic en el punto 1...", wrapNext: "¡Muy bien! Clic en el punto ", wrapErr: "❌ ¡Orden incorrecto! Empieza en la base.",
+        maletaEval: "🎒 Evaluar Kit", triageQ: "¿A quién debes atender EN PRIMER LUGAR no accidente?",
+        triageA: "🧑 Víctima A: Llorando fuerte con brazo roto.", triageB: "👨 Víctima B: Desmayada y sin respirar.", triageC: "👧 Víctima C: Corte sangrando en el dedo.",
+        triageErrA: "⚠️ ¡Errado! Quien grita respira. Enfoque en el silencio.", triageErrC: "⚠️ ¡Errado! Corte en el dedo es leve frente a paro cardíaco.", triageSucc: "🏅 ¡Perfecto! El paro respiratorio silencioso é prioridad máxima.",
+        quizHeader: "🎮 MISIÓN ", quizNext: "Próxima Misión ➔", pStep1T: "Paso 1: Evaluación", pStep1D: "Sacuda los hombros de la víctima y llame alto. Vea si responde.", pStep1V: "Sacuda los hombros de la víctima y llame alto. Vea si responde.",
+        pStep2T: "Paso 2: Respiración", pStep2D: "Mire el pecho por 5 segundos. Vea si sube y baja.", pStep2V: "Mire el pecho por 5 segundos. Vea si sube y baja.",
+        pStep3T: "Paso 3: Ayuda", pStep3D: "Si no respira, llame a urgencias y ponga el altavoz.", pStep3V: "Si no respira, llame a urgencias inmediatamente y use el altavoz.",
+        gBox1T: "🥖 Atragantamiento 🔊", gBox1D: "Presione el abdomen hacia adentro y hacia arriba.",
+        gBox2T: "👶 Bebés 🔊", gBox2D: "5 golpes firmes en la espalda con la cabeza hacia abajo.",
+        gBox3T: "🫀 Infarto 🔊", gBox3D: "Dolor de pecho, sudor frío y náuseas. Llame a urgencias.",
+        gBox4T: "🧠 ACV 🔊", gBox4D: "Pídale que Sonría, dé un Abrazo y hable claro."
+    }
+};
+
+function setLanguage(lang) {
+    currentLang = lang;
+    const l = langData[lang];
+    
+    // Traduzindo Interface Principal
+    document.getElementById("menu-title").innerHTML = l.menuTitle;
+    document.getElementById("menu-subtitle").innerHTML = l.menuSubtitle;
+    document.getElementById("btn-panic").innerHTML = l.btnPanic;
+    document.getElementById("btn-menu-play").innerHTML = l.btnPlay;
+    document.getElementById("btn-menu-games").innerHTML = l.btnGames;
+    document.getElementById("btn-menu-sos").innerHTML = l.btnSos;
+    document.querySelectorAll(".btn-global-back").forEach(b => b.innerHTML = l.back);
+    
+    // Select Tradução
+    document.getElementById("opt-easy").innerHTML = l.easy;
+    document.getElementById("opt-medium").innerHTML = l.medium;
+    document.getElementById("opt-hard").innerHTML = l.hard;
+
+    // Traduzindo Menu de Jogos
+    document.getElementById("games-menu-title").innerHTML = l.gMenuTitle;
+    document.getElementById("g1-title").innerHTML = l.g1; document.getElementById("g1-header").innerHTML = "❤️ " + l.g1;
+    document.getElementById("g2-title").innerHTML = l.g2; document.getElementById("g2-header").innerHTML = "🔥 " + l.g2;
+    document.getElementById("g3-title").innerHTML = l.g3; document.getElementById("g3-header").innerHTML = "🥖 " + l.g3;
+    document.getElementById("g4-title").innerHTML = l.g4; document.getElementById("g4-header").innerHTML = "💼 " + l.g4;
+    document.getElementById("g5-title").innerHTML = l.g5; document.getElementById("g5-header").innerHTML = "🧠 " + l.g5;
+    document.getElementById("g6-title").innerHTML = l.g6; document.getElementById("g6-header").innerHTML = "🧯 " + l.g6;
+    document.getElementById("g7-title").innerHTML = l.g7; document.getElementById("g7-header").innerHTML = "🩹 " + l.g7;
+    document.getElementById("g8-title").innerHTML = l.g8; document.getElementById("g8-header").innerHTML = "🔀 " + l.g8;
+
+    // Modo Pânico
+    document.getElementById("panic-title").innerHTML = l.panicTitle;
+    document.getElementById("btn-panic-next").innerHTML = l.panicNext;
+    document.getElementById("btn-panic-call").innerHTML = l.panicCall;
+    document.getElementById("panic-gps").innerHTML = l.panicGps;
+
+    // Guia SOS
+    document.getElementById("guide-header").innerHTML = "🚨 " + l.gMenuTitle;
+    const gContainer = document.getElementById("guide-container");
+    gContainer.innerHTML = `
+        <div class="guide-box" onclick="speakSOS('${l.gBox1D}')"><h3>${l.gBox1T}</h3><p>${l.gBox1D}</p></div>
+        <div class="guide-box" onclick="speakSOS('${l.gBox2D}')"><h3>${l.gBox2T}</h3><p>${l.gBox2D}</p></div>
+        <div class="guide-box" onclick="speakSOS('${l.gBox3D}')"><h3>${l.gBox3T}</h3><p>${l.gBox3D}</p></div>
+        <div class="guide-box" onclick="speakSOS('${l.gBox4D}')"><h3>${l.gBox4T}</h3><p>${l.gBox4D}</p></div>
+    `;
+    setupTriage();
+}
+
+function setDifficulty() {
+    currentDiff = document.getElementById("diff-select").value;
+}
+
+// --- BANCO DE ÁUDIO NATIVO ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playTone(freq, type, duration) {
+    try {
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        osc.type = type; osc.frequency.value = freq; gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+        osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration);
+    } catch(e){}
+}
+function soundSuccess() { playTone(587.33, 'sine', 0.1); setTimeout(() => playTone(880, 'sine', 0.12), 70); }
+function soundError() { playTone(130, 'sawtooth', 0.25); }
+
+// --- GERENCIADOR DE TELAS ---
 function changeScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
     document.getElementById(id).classList.add('active-screen');
+    if(id === 'screen-games-menu') loadMedals();
     if(id === 'screen-game') { score = 0; current = 0; loadQuestion(); }
 }
 
-// --- JOGO DE RITMO (MINI-GAME) ---
-let rhythmClicks = 0; let lastTime = 0;
-function startRhythmGame() { rhythmClicks = 0; lastTime = 0; document.getElementById("rhythm-score").innerHTML = "Pontos: 0 / 20"; document.getElementById("rhythm-feedback").innerHTML = "Comece a clicar!"; changeScreen('screen-rhythm-game'); }
+function loadMedals() {
+    const mIds = ['rcp', 'tinder', 'heimlich', 'maleta', 'avc', 'fire', 'wrap', 'triage'];
+    mIds.forEach(id => { if(localStorage.getItem('m_'+id) === 'true') document.getElementById('medal-'+id).classList.add('medal-unlocked'); });
+}
+
+// --- JOGO 1: RITMO RCP (DIFICULDADE CONFIGURÁVEL) ---
+let rhythmClicks = 0, lastTime = 0, metronomeInterval;
+function startRhythmGame() { rhythmClicks = 0; lastTime = 0; changeScreen('screen-rhythm-game'); metronomeInterval = setInterval(() => { playTone(370, 'sine', 0.04); }, 545); }
 function processRhythmClick() {
     const now = Date.now();
     if (lastTime !== 0) {
         const bpm = 60 / ((now - lastTime) / 1000);
-        const feedback = document.getElementById("rhythm-feedback");
-        if (bpm >= 95 && bpm <= 125) { feedback.innerHTML = "🟢 RITMO CERTO!"; feedback.style.color = "#4CAF50"; rhythmClicks++; } 
-        else { feedback.innerHTML = bpm < 95 ? "⚠️ MAIS RÁPIDO!" : "⚠️ MAIS DEVAGAR!"; feedback.style.color = "#FF9800"; }
+        // Margem de erro muda conforme a dificuldade
+        let margin = currentDiff === 'easy' ? 40 : (currentDiff === 'hard' ? 10 : 20);
+        if (bpm >= (110 - margin) && bpm <= (110 + margin)) { document.getElementById("rhythm-feedback").innerHTML = "🟢 OK!"; rhythmClicks++; soundSuccess(); } 
+        else { document.getElementById("rhythm-feedback").innerHTML = bpm < 110 ? "⚠️ ++" : "⚠️ --"; soundError(); }
     }
-    lastTime = now; document.getElementById("rhythm-score").innerHTML = `Pontos: ${rhythmClicks} / 20`;
-    if(rhythmClicks >= 20) { alert("🎉 INCRÍVEL! Ritmo dominado!"); changeScreen('screen-games-menu'); }
+    lastTime = now; document.getElementById("rhythm-score").innerHTML = `${rhythmClicks} / 20`;
+    if(rhythmClicks >= 20) { clearInterval(metronomeInterval); localStorage.setItem('m_rcp', 'true'); changeScreen('screen-games-menu'); }
 }
 
-// --- JOGO ESTILO TINDER (SWIPE) ---
-let tinderIndex = 0; let tinderScore = 0;
-const tinderDeck = [
-    { text: "Colocar gelo direto na queimadura de pele", isCorrect: false, emoji: "❄️" },
-    { text: "Elevar as pernas de quem acabou de desmaiar", isCorrect: true, emoji: "🛌" },
-    { text: "Jogar pó de café ou açúcar em cortes profundos", isCorrect: false, emoji: "☕" },
-    { text: "Virar de lado uma pessoa tendo convulsão", isCorrect: true, emoji: "🌪️" },
-    { text: "Passar pasta de dente para acalmar queimadura", isCorrect: false, emoji: "🪥" },
-    { text: "NÃO mexer em alguém caído com suspeita de lesão na coluna", isCorrect: true, emoji: "🧘" },
-    { text: "Tentar puxar a língua para fora durante uma convulsão", isCorrect: false, emoji: "👅" }
-];
+// --- JOGO 2: TINDER (CONTEÚDO MULTILINGUAGEM) ---
+let tinderIndex = 0, tinderScore = 0;
+const tinderDeck = {
+    pt: [ { text: "Colocar gelo direto na queimadura", isCorrect: false }, { text: "Elevar pernas em desmaio", isCorrect: true } ],
+    en: [ { text: "Put ice directly on a skin burn", isCorrect: false }, { text: "Elevate legs of someone who fainted", isCorrect: true } ],
+    es: [ { text: "Poner hielo directo en la quemadura", isCorrect: false }, { text: "Elevar piernas en un desmayo", isCorrect: true } ]
+};
 function startTinderGame() { tinderIndex = 0; tinderScore = 0; updateTinderCard(); changeScreen('screen-tinder-game'); }
 function updateTinderCard() {
-    if(tinderIndex >= tinderDeck.length) { alert(`🔥 Fim do Desafio Tinder! Pontuação final: ${tinderScore} pontos!`); changeScreen('screen-games-menu'); return; }
-    const currentCard = tinderDeck[tinderIndex];
-    document.getElementById("tinder-text").innerHTML = currentCard.text;
-    document.getElementById("tinder-emoji").innerHTML = currentCard.emoji;
-    document.getElementById("tinder-score").innerHTML = "Pontuação: " + tinderScore;
-    const cardEl = document.getElementById("tinder-card");
-    cardEl.style.transform = "scale(1) rotate(0deg)"; cardEl.style.opacity = "1";
+    const deck = tinderDeck[currentLang];
+    if(tinderIndex >= deck.length) { if(tinderScore >= 100) localStorage.setItem('m_tinder', 'true'); changeScreen('screen-games-menu'); return; }
+    document.getElementById("tinder-text").innerHTML = deck[tinderIndex].text;
+    document.getElementById("tinder-score").innerHTML = langData[currentLang].score + tinderScore;
 }
-function swipeTinder(userChoice) {
-    const card = document.getElementById("tinder-card");
-    const currentCard = tinderDeck[tinderIndex];
-    if(userChoice === currentCard.isCorrect) { tinderScore += 100; } else { tinderScore -= 50; }
-    card.style.transform = userChoice ? "translateX(200px) rotate(20deg)" : "translateX(-200px) rotate(-20deg)";
-    card.style.opacity = "0";
-    tinderIndex++; setTimeout(updateTinderCard, 350);
+function swipeTinder(choice) {
+    if(choice === tinderDeck[currentLang][tinderIndex].isCorrect) { tinderScore += 100; soundSuccess(); } else { tinderScore -= 50; soundError(); }
+    tinderIndex++; updateTinderCard();
 }
 
-// --- JOGO DA MALETA ---
+// --- JOGO 3: MALETA ---
 const itemsDatabase = [
-    { name: "Gaze Estéril", isRight: true }, { name: "Pó de Café", isRight: false },
-    { name: "Fita Micropore", isRight: true }, { name: "Pasta de Dente", isRight: false },
-    { name: "Luvas de Látex", isRight: true }, { name: "Remédio Controlado", isRight: false },
-    { name: "Tesoura Sem Ponta", isRight: true }, { name: "Manteiga", isRight: false },
-    { name: "Antisséptico Spray", isRight: true }, { name: "Sal de Cozinha", isRight: false },
-    { name: "Band-Aid / Curativos", isRight: true }, { name: "Agulha de Costura", isRight: false }
+    { name: {pt: "Gaze Estéril", en: "Sterile Gauze", es: "Gasa Estéril"}, isRight: true },
+    { name: {pt: "Pó de Café", en: "Coffee Powder", es: "Café en Polvo"}, isRight: false },
+    { name: {pt: "Fita Micropore", en: "Medical Tape", es: "Cinta Médica"}, isRight: true },
+    { name: {pt: "Manteiga", en: "Butter", es: "Mantequilla"}, isRight: false }
 ];
 let selectedItems = [];
 function startMaletaGame() {
     selectedItems = []; const container = document.getElementById("maleta-container"); container.innerHTML = "";
-    const shuffled = [...itemsDatabase].sort(() => 0.5 - Math.random());
-    shuffled.forEach(item => {
-        const div = document.createElement("div"); div.className = "item-checkbox"; div.innerHTML = item.name;
-        div.onclick = () => { if(selectedItems.includes(item.name)) { selectedItems = selectedItems.filter(i => i !== item.name); div.classList.remove("item-selected"); } else { selectedItems.push(item.name); div.classList.add("item-selected"); } };
+    document.getElementById("btn-maleta-eval").innerHTML = langData[currentLang].maletaEval;
+    itemsDatabase.forEach(item => {
+        const div = document.createElement("div"); div.className = "item-checkbox"; div.innerHTML = item.name[currentLang];
+        div.onclick = () => { if(selectedItems.includes(item.name[currentLang])) { selectedItems = selectedItems.filter(i => i !== item.name[currentLang]); div.classList.remove("item-selected"); } else { selectedItems.push(item.name[currentLang]); div.classList.add("item-selected"); } };
         container.appendChild(div);
     });
     changeScreen('screen-maleta-game');
 }
 function concludeMaleta() {
-    let hits = 0; let errors = 0;
-    itemsDatabase.forEach(item => { if(selectedItems.includes(item.name)) { if(item.isRight) hits++; else errors++; } });
-    alert(`💼 Avaliação do seu Kit:\nVocê colocou ${hits} itens indispensáveis.\nE adicionou ${errors} mitos/itens perigosos.\n\nSua nota: ${(hits - errors) * 10} / 60 pontos!`);
+    let h = 0, e = 0; itemsDatabase.forEach(item => { if(selectedItems.includes(item.name[currentLang])) { if(item.isRight) h++; else e++; } });
+    if(h === 2 && e === 0) { localStorage.setItem('m_maleta', 'true'); soundSuccess(); } else soundError();
     changeScreen('screen-games-menu');
 }
 
-// --- MINI-JOGOS: DESENGASGO (HEIMLICH) ---
+// --- JOGO 4: HEIMLICH ---
 let heimlichCount = 0;
-function startChokeGame() {
-    heimlichCount = 0;
-    document.getElementById("victim-face").innerHTML = "🤢";
-    document.getElementById("victim-face").style.transform = "scale(1)";
-    const food = document.getElementById("choke-food");
-    food.style.top = "55px"; food.style.left = "52%"; food.style.opacity = "1";
-    document.getElementById("choke-status").innerHTML = "Vias aéreas obstruídas! Pressione!";
-    document.getElementById("choke-status").style.color = "#FFEB3B";
-    document.getElementById("btn-heimlich-action").innerHTML = "🔺 APLICAR MANOBRA (0/5)";
-    document.getElementById("btn-heimlich-action").disabled = false;
-    changeScreen('screen-choke-game');
-}
-
+function startChokeGame() { heimlichCount = 0; document.getElementById("victim-face").innerHTML = "🤢"; document.getElementById("choke-food").style.top = "50px"; document.getElementById("choke-status").innerHTML = langData[currentLang].chokeObstr; document.getElementById("btn-heimlich-action").innerHTML = langData[currentLang].chokeBtn + " (0/5)"; changeScreen('screen-choke-game'); }
 function applyHeimlichThrust() {
-    heimlichCount++;
-    document.getElementById("btn-heimlich-action").innerHTML = `🔺 APLICAR MANOBRA (${heimlichCount}/5)`;
-    
-    // Animação de compressão na tela
-    const avatar = document.getElementById("victim-face");
-    avatar.style.transform = "scale(0.85)";
-    setTimeout(() => { avatar.style.transform = "scale(1)"; }, 100);
-
+    heimlichCount++; soundSuccess(); document.getElementById("btn-heimlich-action").innerHTML = `${langData[currentLang].chokeBtn} (${heimlichCount}/5)`;
     if (heimlichCount >= 5) {
-        document.getElementById("btn-heimlich-action").disabled = true;
-        document.getElementById("victim-face").innerHTML = "😀";
-        document.getElementById("choke-status").innerHTML = "🟢 SUCESSO! Alimento expelido!";
-        document.getElementById("choke-status").style.color = "#4CAF50";
-        
-        // Objeto voa para fora do cenário
-        const food = document.getElementById("choke-food");
-        food.style.top = "-50px";
-        food.style.left = "80%";
-        food.style.opacity = "0";
-
-        setTimeout(() => {
-            alert("🥖 PARABÉNS! Você salvou a vítima de engasgo usando a Manobra de Heimlich correta!");
-            changeScreen('screen-games-menu');
-        }, 600);
+        document.getElementById("victim-face").innerHTML = "😀"; document.getElementById("choke-food").style.top = "-50px"; document.getElementById("choke-status").innerHTML = langData[currentLang].chokeSucc;
+        localStorage.setItem('m_heimlich', 'true'); setTimeout(() => { changeScreen('screen-games-menu'); }, 600);
     }
 }
 
-// --- LÓGICA DO QUIZ (20 PERGUNTAS VIRTUAIS) ---
-let score = 0; let current = 0;
-const quiz = [
-    { question: "Uma pessoa engasgou e NÃO consegue emitir som. O que fazer?", actionType: "heimlich", answers: [{text: "Fazer Manobra de Heimlich", correct: true}, {text: "Dar água", correct: false}] },
-    { question: "Vítima com dor forte no peito e braço esquerdo dormente.", actionType: "call192", answers: [{text: "Ligar para a Emergência (Infarto)", correct: true}, {text: "Fazer caminhar", correct: false}] },
-    { question: "Uma pessoa do seu lado de repente fica com a boca torta e fala confuso.", actionType: "call192", answers: [{text: "Chamar ajuda médica (Sinal de AVC)", correct: true}, {text: "Dar sal", correct: false}] },
-    { question: "Alguém começa a ter uma convulsão (debater-se no chão).", actionType: "convulsion", answers: [{text: "Proteger a cabeça e virá-la de lado", correct: true}, {text: "Segurar a língua", correct: false}] },
-    { question: "Uma pessoa cortou a mão e está sangrando muito.", actionType: "compress", answers: [{text: "Fazer compressão direta com pano limpo", correct: true}, {text: "Passar pó de café", correct: false}] },
-    { question: "Uma pessoa foi picada por uma cobra no pf durante uma trilha.", actionType: "rest", answers: [{text: "Lavar com água/sabão e manter em repouso", correct: true}, {text: "Fazer um torniquete", correct: false}] },
-    { question: "Alguém caiu e está com suspeita de fratura na perna.", actionType: "splint", answers: [{text: "Imobilizar o membro na posição atual", correct: true}, {text: "Puxar para alinhar", correct: false}] },
-    { question: "Ao ver alguém sofrendo um choque elétrico numa tomada.", actionType: "poweroff", answers: [{text: "Desligar o disjuntor geral imediatamente", correct: true}, {text: "Puxar a pessoa", correct: false}] },
-    { question: "Após passar horas ao sol, pessoa apresenta pele quente, seca e confusão.", actionType: "cool", answers: [{text: "Levar para local fresco e usar panos úmidos", correct: true}, {text: "Dar álcool", correct: false}] },
-    { question: "Vítima com um pedaço de vidro cravado na perna.", actionType: "donttouch", answers: [{text: "NÃO remover o objeto e imobilizá-lo", correct: true}, {text: "Puxar rápido", correct: false}] },
-    { question: "Um bebê com menos de 1 ano engasgou e não consegue chorar.", actionType: "babyheimlich", answers: [{text: "Deitar de bruços no braço e dar 5 batidas nas costas", correct: true}, {text: "Sacudir pelas pernas", correct: false}] },
-    { question: "O nariz de uma criança começou a sangrar muito de repente.", actionType: "nosebleed", answers: [{text: "Inclinar a cabeça para frente e pressionar", correct: true}, {text: "Inclinar para trás", correct: false}] },
-    { question: "Alguém caiu de uma altura e reclama de muita dor nas costas.", actionType: "call193", answers: [{text: "NÃO movimentar e chamar resgate", correct: true}, {text: "Levantar devagar", correct: false}] },
-    { question: "Uma pessoa foi mordida por um cachorro de rua no braço.", actionType: "washwound", answers: [{text: "Lavar abundantemente com água e sabão", correct: true}, {text: "Passar pomada caseira", correct: false}] },
-    { question: "Rosto inchado e muita falta de ar após comer amendoim.", actionType: "call192", answers: [{text: "Chamar ambulância (Choque Anafilático)", correct: true}, {text: "Esperar passar", correct: false}] },
-    { question: "Uma criança pequena bebeu acidentalmente cloro.", actionType: "call192", answers: [{text: "Não provocar vômito e buscar socorro", correct: true}, {text: "Forçar o vômito", correct: false}] },
-    { question: "Uma pessoa desmaiou após ficar muito tempo em pé no calor.", actionType: "elevatelegs", answers: [{text: "Elevar as pernas da vítima a 30cm", correct: true}, {text: "Dar tapas no rosto", correct: false}] },
-    { question: "Um produto químico de limpeza espirrou direto nos olhos de alguém.", actionType: "washeyes", answers: [{text: "Lavar com água corrente por 15 a 20 minutos", correct: true}, {text: "Passar colírio caseiro", correct: false}] },
-    { question: "Jogador teve uma fratura exposta no braço durante a partida.", actionType: "call193", answers: [{text: "Cobrir com pano limpo e chamar socorro", correct: true}, {text: "Empurrar o osso", correct: false}] },
-    { question: "No calor, bebê apresenta boca seca, choro sem lágrimas e olhos fundos.", actionType: "call192", answers: [{text: "Oferecer soro/líquidos e ir ao médico", correct: true}, {text: "Dar comida pesada", correct: false}] }
-];
+// --- JOGO 5: AVC (TEMPO MUDA CONFORME DIFICULDADE) ---
+let avcInterval, avcTimeLeft = 15, avcHits = 0;
+function startAvcGame() {
+    // Dificuldade altera o tempo disponível
+    avcTimeLeft = currentDiff === 'easy' ? 20 : (currentDiff === 'hard' ? 8 : 14);
+    avcHits = 0; document.getElementById("lbl-time").innerHTML = langData[currentLang].lblTime;
+    document.getElementById("avc-score").innerHTML = langData[currentLang].avcSave + "0 / 5";
+    changeScreen('screen-avc-game'); spawnAvcFace();
+    avcInterval = setInterval(() => {
+        avcTimeLeft--; document.getElementById("avc-timer").innerHTML = avcTimeLeft;
+        if(avcTimeLeft <= 0) { clearInterval(avcInterval); soundError(); changeScreen('screen-games-menu'); }
+    }, 1000);
+}
+function spawnAvcFace() {
+    const canvas = document.getElementById("avc-canvas"); canvas.innerHTML = "";
+    const isSymptom = Math.random() > 0.4;
+    const face = document.createElement("div"); face.className = "avc-face"; face.innerHTML = isSymptom ? "🥴" : "😀";
+    face.style.left = Math.random() * 70 + 10 + "%"; face.style.top = Math.random() * 45 + 15 + "%";
+    face.onclick = () => {
+        if(isSymptom) { avcHits++; soundSuccess(); document.getElementById("avc-score").innerHTML = `${langData[currentLang].avcSave}${avcHits} / 5`; } else { soundError(); }
+        if(avcHits >= 5) { clearInterval(avcInterval); localStorage.setItem('m_avc', 'true'); changeScreen('screen-games-menu'); } else { spawnAvcFace(); }
+    };
+    canvas.appendChild(face);
+}
+
+// --- JOGO 6: FOGO ---
+let fireClicks = 0;
+function startFireGame() { fireClicks = 0; document.getElementById("fire-icon").innerHTML = "🔥"; document.getElementById("fire-scen").innerHTML = langData[currentLang].fireScen; document.getElementById("fire-status").innerHTML = langData[currentLang].fireLacre; document.getElementById("btn-fire-lacre").style.display = "block"; document.getElementById("btn-fire-lacre").innerHTML = langData[currentLang].fireBtnLacre; document.getElementById("extinguishers").style.display = "none"; changeScreen('screen-fire-game'); }
+function breakLacre() { soundSuccess(); document.getElementById("fire-status").innerHTML = "🧯 CO2 / WATER?"; document.getElementById("btn-fire-lacre").style.display = "none"; document.getElementById("extinguishers").style.display = "flex"; }
+function useExtinct(type) {
+    if(type === 1) {
+        fireClicks++; soundSuccess(); 
+        let target = currentDiff === 'hard' ? 8 : 4; // Dificuldade muda cliques necessários
+        document.getElementById("fire-status").innerHTML = `... (${fireClicks}/${target})`;
+        if(fireClicks >= target) { document.getElementById("fire-icon").innerHTML = "💨"; localStorage.setItem('m_fire', 'true'); alert(langData[currentLang].fireSucc); changeScreen('screen-games-menu'); }
+    } else { soundError(); alert(langData[currentLang].fireErr); }
+}
+
+// --- JOGO 7: CURATIVO ---
+let nextNodeRequired = 1;
+function startWrapGame() { nextNodeRequired = 1; document.getElementById("wrap-status").innerHTML = langData[currentLang].wrapWait; document.querySelectorAll('.dot-node').forEach(n => n.style.background = "#FF9800"); changeScreen('screen-wrap-game'); }
+function clickNode(num) {
+    if(num === nextNodeRequired) {
+        document.getElementById("node" + num).style.background = "#4CAF50"; soundSuccess(); nextNodeRequired++;
+        if(nextNodeRequired > 3) { localStorage.setItem('m_wrap', 'true'); changeScreen('screen-games-menu'); } 
+        else { document.getElementById("wrap-status").innerHTML = langData[currentLang].wrapNext + nextNodeRequired; }
+    } else { soundError(); document.getElementById("wrap-status").innerHTML = langData[currentLang].wrapErr; }
+}
+
+// --- JOGO 8: TRIAGEM ---
+function startTriageGame() { changeScreen('screen-triage-game'); }
+function setupTriage() {
+    const opt = document.getElementById("triage-options"); const l = langData[currentLang];
+    opt.innerHTML = `
+        <button onclick="alert('${l.triageErrA}'); soundError(); changeScreen('screen-games-menu')">${l.triageA}</button>
+        <button onclick="localStorage.setItem('m_triage', 'true'); soundSuccess(); alert('${l.triageSucc}'); changeScreen('screen-games-menu')">${l.triageB}</button>
+        <button onclick="alert('${l.triageErrC}'); soundError(); changeScreen('screen-games-menu')">${l.triageC}</button>
+    `;
+}
+
+// --- MODO PÂNICO MULTILINGUAGEM ---
+let panicInterval, panicSecs = 0, panicStep = 1;
+function startPanicMode() {
+    panicSecs = 0; panicStep = 0; changeScreen('screen-panic');
+    navigator.geolocation.getCurrentPosition((p) => { document.getElementById("panic-gps").innerHTML = `📍 GPS: ${p.coords.latitude.toFixed(3)}, ${p.coords.longitude.toFixed(3)}`; });
+    panicInterval = setInterval(() => { panicSecs++; let m = Math.floor(panicSecs / 60).toString().padStart(2, '0'); let s = (panicSecs % 60).toString().padStart(2, '0'); document.getElementById("panic-timer").innerHTML = `${m}:${s}`; }, 1000);
+    nextPanicStep();
+}
+function nextPanicStep() {
+    const l = langData[currentLang];
+    const steps = [
+        { title: l.pStep1T, desc: l.pStep1D, voice: l.pStep1V },
+        { title: l.pStep2T, desc: l.pStep2D, voice: l.pStep2V },
+        { title: l.pStep3T, desc: l.pStep3D, voice: l.pStep3V }
+    ];
+    if(panicStep >= steps.length) panicStep = 2;
+    document.getElementById("panic-step-title").innerHTML = steps[panicStep].title;
+    document.getElementById("panic-step-desc").innerHTML = steps[panicStep].desc;
+    speakSOS(steps[panicStep].voice); panicStep++;
+}
+function stopPanicMode() { clearInterval(panicInterval); changeScreen('screen-menu'); window.speechSynthesis.cancel(); }
+function speakSOS(t) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = currentLang === 'en' ? 'en-US' : (currentLang === 'es' ? 'es-ES' : 'pt-BR'); window.speechSynthesis.speak(u); }
+
+// --- QUIZ MULTILINGUAGEM (20 QUESTÕES ADAPTÁVEIS) ---
+let score = 0, current = 0;
+const quizData = {
+    pt: [
+        { question: "Vítima engasgada e NÃO emite som. O que fazer?", answers: [{text: "Manobra de Heimlich", correct: true}, {text: "Dar água", correct: false}] },
+        { question: "Dor forte no peito e braço esquerdo dormente.", answers: [{text: "Ligar para Emergência", correct: true}, {text: "Fazer caminhar", correct: false}] }
+    ],
+    en: [
+        { question: "Choking victim CANNOT make any sound. What to do?", answers: [{text: "Heimlich Maneuver", correct: true}, {text: "Give water", correct: false}] },
+        { question: "Severe chest pain and numb left arm.", answers: [{text: "Call Emergency", correct: true}, {text: "Make them walk", correct: false}] }
+    ],
+    es: [
+        { question: "¿Víctima atragantada que NO emite sonido. Qué hacer?", answers: [{text: "Maniobra de Heimlich", correct: true}, {text: "Dar agua", correct: false}] },
+        { question: "Dolor fuerte de pecho y brazo izquierdo adormecido.", answers: [{text: "Llamar a Urgencias", correct: true}, {text: "Hacerle caminar", correct: false}] }
+    ]
+};
 
 function loadQuestion() {
-    const q = quiz[current] || quiz[0]; document.getElementById("question").innerHTML = q.question;
-    document.getElementById("explanation").style.display = "none"; document.getElementById("action-zone").style.display = "none"; document.getElementById("next").style.display = "none";
+    const q = quizData[currentLang][current] || quizData[currentLang][0];
+    document.getElementById("quiz-header").innerHTML = langData[currentLang].quizHeader + (current + 1);
+    document.getElementById("question").innerHTML = q.question;
+    document.getElementById("next").style.display = "none"; document.getElementById("next").innerHTML = langData[currentLang].quizNext;
     const ansDiv = document.getElementById("answers"); ansDiv.innerHTML = "";
-    q.answers.forEach(a => { const b = document.createElement("button"); b.innerHTML = a.text; b.onclick = () => select(b, a.correct); ansDiv.appendChild(b); });
+    q.answers.forEach(a => { const b = document.createElement("button"); b.innerHTML = a.text; b.onclick = () => { document.querySelectorAll("#answers button").forEach(btn => btn.disabled = true); if(a.correct) { b.className = "correct"; score += 100; soundSuccess(); } else { b.className = "wrong"; soundError(); }; document.getElementById("next").style.display = "block"; }; ansDiv.appendChild(b); });
+    document.getElementById("score-text").innerHTML = langData[currentLang].score + score;
 }
-function select(btn, isCorrect) {
-    document.querySelectorAll("#answers button").forEach(b => b.disabled = true);
-    if(isCorrect) { btn.className = "correct"; score += 100; showAction(quiz[current].actionType); } 
-    else { btn.className = "wrong"; document.getElementById("next").style.display = "block"; }
-    document.getElementById("score-text").innerHTML = "Pontos: " + score;
-}
-function showAction(type) {
-    const zone = document.getElementById("action-zone"); zone.style.display = "block";
-    if(type === "call192") { zone.innerHTML = `<p>📞 Simulando Chamada para o SAMU (192)...</p><button class="btn-emergency" onclick="confirmVirtualAction('Chamada Efetuada! Linha médica ativa.')">📳 CONECTAR CHAMADA</button>`; } 
-    else if(type === "call193") { zone.innerHTML = `<p>🚒 Simulando Chamada para Bombeiros (193)...</p><button class="btn-emergency" onclick="confirmVirtualAction('Chamada Efetuada! Resgate acionado.')">📳 CONECTAR RESGATE</button>`; } 
-    else if(type === "heimlich") { zone.innerHTML = `<button onclick="confirmVirtualAction('✅ Objeto expelido com a manobra!')">🔺 SIMULAR HEIMLICH</button>`; } 
-    else { zone.innerHTML = `<button onclick="confirmVirtualAction('✅ Procedimento realizado.')">🤝 APLICAR CUIDADO</button>`; }
-}
-function confirmVirtualAction(msg) { document.getElementById("action-zone").innerHTML = `<p style="color:#4CAF50; font-weight:bold; margin:10px 0;">${msg}</p>`; document.getElementById("next").style.display = "block"; }
-function nextQuestion() { current++; if(current >= quiz.length) { alert("🏆 Treinamento finalizado!"); changeScreen('screen-menu'); } else { loadQuestion(); } }
+function nextQuestion() { current++; if(current >= quizData[currentLang].length) { changeScreen('screen-menu'); } else { loadQuestion(); } }
+
+// Inicializa o App em Português padrão
+setLanguage('pt');
 </script>
 
 </body>
