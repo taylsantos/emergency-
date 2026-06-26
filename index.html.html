@@ -1,75 +1,180 @@
-<!DOCTYPE html>
+
+     <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOS HERO</title>
+<title>SOS HERO - App</title>
 
 <style>
+/* 1. CONFIGURAÇÕES DE APP MOBILE */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to bottom, #1e3c72, #2a5298);
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: white;
     text-align: center;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .app-container {
-    max-width: 500px;
+    max-width: 450px;
     width: 90%;
+    height: 90vh;
     margin: auto;
-    padding: 25px;
+    padding: 20px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
-.screen {
-    display: none;
-}
-.active-screen {
-    display: block;
-}
+/* Gerenciamento de Telas */
+.screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+.active-screen { display: flex; }
 
-h1 { font-size: 28px; margin-bottom: 5px; }
-h2 { font-size: 20px; margin: 20px 0; }
+/* Tipografia */
+h1 { font-size: 26px; margin: 10px 0; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+h2 { font-size: 18px; margin: 15px 0; }
+p { font-size: 14px; opacity: 0.9; line-height: 1.4; margin: 5px 0; }
 
+/* Botões Estilizados */
 button {
     display: block;
     width: 100%;
-    margin: 12px 0;
+    margin: 10px 0;
     padding: 16px;
     font-size: 16px;
     font-weight: bold;
     border: none;
-    border-radius: 12px;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.2s ease;
     background: white;
     color: #1e3c72;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+button:active { transform: scale(0.96); }
+
+.btn-menu-play { background: #4CAF50; color: white; }
+.btn-menu-games { background: #E91E63; color: white; }
+.btn-menu-sos { background: #FF9800; color: white; }
+.btn-back { background: rgba(255,255,255,0.2); color: white; margin-top: auto; }
+
+/* Grid de Mini-Jogos */
+.games-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
 }
 
-.btn-menu-play { background: #4CAF50; color: white; font-size: 18px; }
-.btn-menu-sos { background: #F44336; color: white; font-size: 18px; }
-.btn-back { background: #607D8B; color: white; margin-top: 20px; }
+.game-card {
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 20px;
+    border-bottom: 4px solid #E91E63;
+    cursor: pointer;
+}
+.game-card span { font-size: 24px; display:block; margin-bottom: 5px;}
+
+/* MECÂNICA ESTILO TINDER (SWIPE CARD) */
+.tinder-box {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.tinder-card {
+    width: 85%;
+    height: 200px;
+    background: linear-gradient(135deg, #ff007f, #7928ca);
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    position: absolute;
+}
+
+.tinder-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+.btn-tinder-left { background: #C62828; color: white; font-size: 24px; border-radius: 50%; width: 65px; height: 65px; padding:0; }
+.btn-tinder-right { background: #2E7D32; color: white; font-size: 24px; border-radius: 50%; width: 65px; height: 65px; padding:0; }
+
+/* MECÂNICA DA MALETA DE ITENS */
+.maleta-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 280px;
+    padding: 5px;
+}
+.item-checkbox {
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background 0.2s;
+    border: 2px solid transparent;
+}
+.item-selected {
+    background: #FF9800 !important;
+    color: white !important;
+    border-color: white;
+}
+
+/* MINI-JOGO DE DESENGASGO (HEIMLICH) */
+.choke-visual-box {
+    background: rgba(0,0,0,0.4);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 15px 0;
+    position: relative;
+    height: 160px;
+}
+.victim-avatar { font-size: 55px; display: block; margin-top: 20px; transition: transform 0.2s; }
+.airway-object {
+    font-size: 22px;
+    position: absolute;
+    top: 55px;
+    left: 52%;
+    transform: translateX(-50%);
+    transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+/* Elementos Gerais */
+#action-zone { margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.15); border-radius: 15px; display: none; }
+.btn-emergency { background: #ff5252; color: white; animation: pulse 0.8s infinite alternate; }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+.guide-list { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
+.guide-box { background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; text-align: left; margin-bottom: 10px; border-left: 4px solid #FF9800; }
+.guide-box h3 { margin: 0 0 5px; font-size: 16px; color: #FFEB3B; }
 .correct { background: #2E7D32 !important; color: white !important; }
 .wrong { background: #C62828 !important; color: white !important; }
-#next { background: #FF9800; color: white; display: none; }
-
-#explanation { margin: 15px 0; font-style: italic; font-size: 15px; color: #FFEB3B; display: none; }
-.guide-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 15px; border-left: 5px solid #FF9800; }
-.guide-box h3 { margin-top: 0; margin-bottom: 8px; color: #FFEB3B; font-size: 18px; }
-.guide-box p { margin: 0; font-size: 14px; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -77,352 +182,287 @@ button:hover {
 <div class="app-container">
 
     <div id="screen-menu" class="screen active-screen">
-        <h1>🚑 SOS HERO</h1>
-        <p style="opacity: 0.7;">O aplicativo que salva vidas</p>
-        <div style="margin-top: 40px;">
-            <button class="btn-menu-play" onclick="changeScreen('screen-game')">🎮 JOGAR TREINAMENTO</button>
+        <div style="margin-top: 20px;">
+            <span style="font-size: 50px;">🚑</span>
+            <h1>SOS HERO</h1>
+            <p>Treine, jogue e salve vidas.</p>
+        </div>
+        <div style="margin-top: 30px;">
+            <button class="btn-menu-play" onclick="changeScreen('screen-game')">🎮 QUIZ DE SIMULAÇÃO</button>
+            <button class="btn-menu-games" onclick="changeScreen('screen-games-menu')">🕹️ MINI-JOGOS</button>
             <button class="btn-menu-sos" onclick="changeScreen('screen-sos')">🚨 GUIA SOS RÁPIDO</button>
         </div>
+        <p style="margin-top: auto; font-size: 12px; opacity: 0.5;">v3.5 - Heimlich Edition</p>
+    </div>
+
+    <div id="screen-games-menu" class="screen">
+        <h1>🕹️ MINI-JOGOS</h1>
+        <p>Escolha um desafio interativo!</p>
+        <div class="games-grid">
+            <div class="game-card" onclick="startRhythmGame()">
+                <span>❤️</span>
+                <strong>Ritmo RCP</strong>
+                <small style="display:block; font-size:10px; opacity:0.7;">Treine os 110 BPM</small>
+            </div>
+            <div class="game-card" onclick="startTinderGame()">
+                <span>🔥</span>
+                <strong>Certo ou Mito</strong>
+                <small style="display:block; font-size:10px; opacity:0.7;">Estilo Tinder Swipe</small>
+            </div>
+            <div class="game-card" onclick="startChokeGame()" style="grid-column: span 2; border-bottom-color: #4CAF50;">
+                <span>🥖</span>
+                <strong>Salva-Vidas Heimlich</strong>
+                <small style="display:block; font-size:10px; opacity:0.7;">Pressione rápido para expelir o objeto!</small>
+            </div>
+            <div class="game-card" onclick="startMaletaGame()" style="grid-column: span 2;">
+                <span>💼</span>
+                <strong>Monte a Maleta SOS</strong>
+                <small style="display:block; font-size:10px; opacity:0.7;">Organize o kit de primeiros socorros ideal</small>
+            </div>
+        </div>
+        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Voltar ao Menu</button>
+    </div>
+
+    <div id="screen-rhythm-game" class="screen">
+        <h1>❤️ RITMO RCP</h1>
+        <p>Toque no coração seguindo o ritmo correto!</p>
+        <div id="rhythm-feedback" style="font-size: 18px; font-weight: bold; margin: 15px; height: 25px;">Aguardando...</div>
+        <div id="rhythm-target" onclick="processRhythmClick()" style="width:110px; height:110px; background:#ff5252; border-radius:50%; margin: 15px auto; display:flex; align-items:center; justify-content:center; font-size:35px; cursor:pointer; border: 5px solid white;">❤️</div>
+        <div id="rhythm-score">Pontos: 0 / 20</div>
+        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Desistir</button>
+    </div>
+
+    <div id="screen-tinder-game" class="screen">
+        <h1>🔥 CERTO OU MITO?</h1>
+        <p>Arrastar para <b>Esquerda (❌ Mito)</b> ou <b>Direita (🟢 Certo)</b>!</p>
+        <div class="tinder-box">
+            <div id="tinder-card" class="tinder-card">
+                <span id="tinder-emoji" style="font-size: 40px; margin-bottom: 10px;">🩹</span>
+                <b id="tinder-text" style="font-size: 16px;">Carregando...</b>
+            </div>
+        </div>
+        <div class="tinder-buttons">
+            <button class="btn-tinder-left" onclick="swipeTinder(false)">❌</button>
+            <button class="btn-tinder-right" onclick="swipeTinder(true)">🟢</button>
+        </div>
+        <div id="tinder-score">Pontuação: 0</div>
+        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Desistir</button>
+    </div>
+
+    <div id="screen-maleta-game" class="screen">
+        <h1>💼 MONTE A MALETA</h1>
+        <p>Selecione apenas os itens que **DEVEM** estar em uma maleta básica.</p>
+        <div id="maleta-container" class="maleta-list"></div>
+        <button onclick="concludeMaleta()" style="background:#4CAF50; color:white; margin-top:15px;">🎒 Fechar e Avaliar Maleta</button>
+        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Voltar</button>
+    </div>
+
+    <div id="screen-choke-game" class="screen">
+        <h1>🥖 SALVA-VIDAS HEIMLICH</h1>
+        <p>O paciente está engasgado com um pedaço de comida! Clique rápido no botão para aplicar pressão na boca do estômago!</p>
+        <div class="choke-visual-box">
+            <span id="victim-face" class="victim-avatar">🤢</span>
+            <span id="choke-food" class="airway-object">🥩</span>
+        </div>
+        <div id="choke-status" style="font-size: 16px; font-weight: bold; margin: 10px; color:#FFEB3B;">Vias aéreas obstruídas!</div>
+        <button id="btn-heimlich-action" onclick="applyHeimlichThrust()" style="background: #E53935; color: white; font-size: 18px;">🔺 APLICAR MANOBRA (0/5)</button>
+        <button class="btn-back" onclick="changeScreen('screen-games-menu')">↩ Desistir</button>
     </div>
 
     <div id="screen-game" class="screen">
-        <h1>🎮 TREINAMENTO</h1>
+        <h1 id="quiz-header">🎮 MISSÃO</h1>
         <h2 id="question"></h2>
-        <div id="explanation"></div>
-        <div id="answers"></div>
-        <button id="next" onclick="nextQuestion()">Próxima Missão ➔</button>
-        <div id="score" style="margin-top: 20px;">Pontos: 0</div>
-        <button class="btn-back" onclick="goToMenu()">↩ Voltar ao Menu</button>
+        <div id="explanation" style="font-size: 14px; color: #FFEB3B; margin-bottom: 10px; display: none;"></div>
+        <div id="action-zone"></div>
+        <div id="answers" style="flex-grow: 1; overflow-y: auto;"></div>
+        <button id="next" onclick="nextQuestion()" style="background: #FF9800; color: white; display: none;">Próxima Missão ➔</button>
+        <div id="score-text" style="margin: 10px 0;">Pontos: 0</div>
+        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Menu</button>
     </div>
 
     <div id="screen-sos" class="screen">
-        <h1 style="color: #FFCDD2;">🚨 GUIA DE EMERGÊNCIA</h1>
-        <p style="margin-bottom: 20px;">Ligue sempre para o <strong>SAMU (192)</strong> em casos graves!</p>
-        
-        <div style="max-height: 380px; overflow-y: auto; padding-right: 5px;">
-            <div class="guide-box">
-                <h3>🥖 Engasgo (Pessoa adulta sem som)</h3>
-                <p>Fique atrás da pessoa, abrace a cintura dela e pressione a boca do estômago para dentro e para cima (Manobra de Heimlich) com força.</p>
-            </div>
-            
-            <div class="guide-box">
-                <h3>👶 Engasgo em Bebês (Menores de 1 ano)</h3>
-                <p>Deite o bebê de bruços no seu antebraço, com a cabeça mais baixa que o corpo. Aplique 5 batidas firmes nas costas, entre os ombros.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🧠 AVC / Derrame (Sinais SAMU)</h3>
-                <p>Observe se a boca entortou ao <b>S</b>orrir, se falta força para dar um <b>A</b>braço ou se a fala está confusa como uma <b>M</b>úsica. Se notar isso, ligue <b>U</b>rgente para o 192.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🫀 Infarto (Ataque Cardíaco)</h3>
-                <p>Dor forte no peito que aperta e pode ir para o braço esquerdo ou costas, com suor frio. Deixe a pessoa sentada, calma e ligue para o 192 na hora.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🌪️ Convulsão (Debater-se)</h3>
-                <p>Proteja a cabeça da pessoa com algo macio (uma blusa) e vire-a de lado para não engasgar. NUNCA tente segurar a língua dela ou colocar objetos na boca.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🩸 Cortes e Sangramentos</h3>
-                <p>Lave com água limpa e pressione um pano limpo firmemente sobre o ferimento para estancar o sangue. Nunca jogue pó de café, açúcar ou pomadas caseiras.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🔥 Queimaduras</h3>
-                <p>Coloque a área queimada debaixo da água corrente da torneira por 15 minutos. Nunca passe pasta de dente, manteiga ou gelo direto na bolha.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>⚡ Choque Elétrico</h3>
-                <p>NUNCA toque na vítima se ela ainda estiver encostada na tomada ou fio. Desligue o disjuntor geral de energia imediatamente antes de ajudar.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🛌 Desmaio Comum</h3>
-                <p>Se a pessoa caiu mas está deitada e respirando, eleve as pernas dela a cerca de 30 cm do chão. Isso faz o sangue voltar mais rápido para o cérebro.</p>
-            </div>
-
-            <div class="guide-box">
-                <h3>🐍 Picadas de Cobras ou Escorpiões</h3>
-                <p>Lave o local apenas com água e sabão. Mantenha a vítima deitada e em repouso absoluto para o veneno não espalhar. Leve direto ao hospital.</p>
-            </div>
+        <h1>🚨 GUIA RÁPIDO</h1>
+        <div class="guide-list">
+            <div class="guide-box"><h3>🥖 Engasgo</h3><p>Pressione a boca do estômago para dentro e para cima.</p></div>
+            <div class="guide-box"><h3>👶 Bebês</h3><p>5 batidas firmes nas costas com a cabeça inclinada para baixo.</p></div>
+            <div class="guide-box"><h3>🫀 Infarto</h3><p>Dor no peito, suor frio e náusea. Ligue 192.</p></div>
+            <div class="guide-box"><h3>🧠 AVC</h3><p>Peça para Sorrir, Abraçar e cantar uma Música.</p></div>
+            <div class="guide-box"><h3>🌪️ Convulsão</h3><p>Proteja a cabeça e vire de lado. Nunca segure a língua.</p></div>
         </div>
-
-        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Voltar ao Menu</button>
+        <button class="btn-back" onclick="changeScreen('screen-menu')">↩ Voltar</button>
     </div>
 
 </div>
 
 <script>
-function changeScreen(screenId) {
+// --- NAVEGAÇÃO ---
+function changeScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-    document.getElementById(screenId).classList.add('active-screen');
+    document.getElementById(id).classList.add('active-screen');
+    if(id === 'screen-game') { score = 0; current = 0; loadQuestion(); }
+}
+
+// --- JOGO DE RITMO (MINI-GAME) ---
+let rhythmClicks = 0; let lastTime = 0;
+function startRhythmGame() { rhythmClicks = 0; lastTime = 0; document.getElementById("rhythm-score").innerHTML = "Pontos: 0 / 20"; document.getElementById("rhythm-feedback").innerHTML = "Comece a clicar!"; changeScreen('screen-rhythm-game'); }
+function processRhythmClick() {
+    const now = Date.now();
+    if (lastTime !== 0) {
+        const bpm = 60 / ((now - lastTime) / 1000);
+        const feedback = document.getElementById("rhythm-feedback");
+        if (bpm >= 95 && bpm <= 125) { feedback.innerHTML = "🟢 RITMO CERTO!"; feedback.style.color = "#4CAF50"; rhythmClicks++; } 
+        else { feedback.innerHTML = bpm < 95 ? "⚠️ MAIS RÁPIDO!" : "⚠️ MAIS DEVAGAR!"; feedback.style.color = "#FF9800"; }
+    }
+    lastTime = now; document.getElementById("rhythm-score").innerHTML = `Pontos: ${rhythmClicks} / 20`;
+    if(rhythmClicks >= 20) { alert("🎉 INCRÍVEL! Ritmo dominado!"); changeScreen('screen-games-menu'); }
+}
+
+// --- JOGO ESTILO TINDER (SWIPE) ---
+let tinderIndex = 0; let tinderScore = 0;
+const tinderDeck = [
+    { text: "Colocar gelo direto na queimadura de pele", isCorrect: false, emoji: "❄️" },
+    { text: "Elevar as pernas de quem acabou de desmaiar", isCorrect: true, emoji: "🛌" },
+    { text: "Jogar pó de café ou açúcar em cortes profundos", isCorrect: false, emoji: "☕" },
+    { text: "Virar de lado uma pessoa tendo convulsão", isCorrect: true, emoji: "🌪️" },
+    { text: "Passar pasta de dente para acalmar queimadura", isCorrect: false, emoji: "🪥" },
+    { text: "NÃO mexer em alguém caído com suspeita de lesão na coluna", isCorrect: true, emoji: "🧘" },
+    { text: "Tentar puxar a língua para fora durante uma convulsão", isCorrect: false, emoji: "👅" }
+];
+function startTinderGame() { tinderIndex = 0; tinderScore = 0; updateTinderCard(); changeScreen('screen-tinder-game'); }
+function updateTinderCard() {
+    if(tinderIndex >= tinderDeck.length) { alert(`🔥 Fim do Desafio Tinder! Pontuação final: ${tinderScore} pontos!`); changeScreen('screen-games-menu'); return; }
+    const currentCard = tinderDeck[tinderIndex];
+    document.getElementById("tinder-text").innerHTML = currentCard.text;
+    document.getElementById("tinder-emoji").innerHTML = currentCard.emoji;
+    document.getElementById("tinder-score").innerHTML = "Pontuação: " + tinderScore;
+    const cardEl = document.getElementById("tinder-card");
+    cardEl.style.transform = "scale(1) rotate(0deg)"; cardEl.style.opacity = "1";
+}
+function swipeTinder(userChoice) {
+    const card = document.getElementById("tinder-card");
+    const currentCard = tinderDeck[tinderIndex];
+    if(userChoice === currentCard.isCorrect) { tinderScore += 100; } else { tinderScore -= 50; }
+    card.style.transform = userChoice ? "translateX(200px) rotate(20deg)" : "translateX(-200px) rotate(-20deg)";
+    card.style.opacity = "0";
+    tinderIndex++; setTimeout(updateTinderCard, 350);
+}
+
+// --- JOGO DA MALETA ---
+const itemsDatabase = [
+    { name: "Gaze Estéril", isRight: true }, { name: "Pó de Café", isRight: false },
+    { name: "Fita Micropore", isRight: true }, { name: "Pasta de Dente", isRight: false },
+    { name: "Luvas de Látex", isRight: true }, { name: "Remédio Controlado", isRight: false },
+    { name: "Tesoura Sem Ponta", isRight: true }, { name: "Manteiga", isRight: false },
+    { name: "Antisséptico Spray", isRight: true }, { name: "Sal de Cozinha", isRight: false },
+    { name: "Band-Aid / Curativos", isRight: true }, { name: "Agulha de Costura", isRight: false }
+];
+let selectedItems = [];
+function startMaletaGame() {
+    selectedItems = []; const container = document.getElementById("maleta-container"); container.innerHTML = "";
+    const shuffled = [...itemsDatabase].sort(() => 0.5 - Math.random());
+    shuffled.forEach(item => {
+        const div = document.createElement("div"); div.className = "item-checkbox"; div.innerHTML = item.name;
+        div.onclick = () => { if(selectedItems.includes(item.name)) { selectedItems = selectedItems.filter(i => i !== item.name); div.classList.remove("item-selected"); } else { selectedItems.push(item.name); div.classList.add("item-selected"); } };
+        container.appendChild(div);
+    });
+    changeScreen('screen-maleta-game');
+}
+function concludeMaleta() {
+    let hits = 0; let errors = 0;
+    itemsDatabase.forEach(item => { if(selectedItems.includes(item.name)) { if(item.isRight) hits++; else errors++; } });
+    alert(`💼 Avaliação do seu Kit:\nVocê colocou ${hits} itens indispensáveis.\nE adicionou ${errors} mitos/itens perigosos.\n\nSua nota: ${(hits - errors) * 10} / 60 pontos!`);
+    changeScreen('screen-games-menu');
+}
+
+// --- MINI-JOGOS: DESENGASGO (HEIMLICH) ---
+let heimlichCount = 0;
+function startChokeGame() {
+    heimlichCount = 0;
+    document.getElementById("victim-face").innerHTML = "🤢";
+    document.getElementById("victim-face").style.transform = "scale(1)";
+    const food = document.getElementById("choke-food");
+    food.style.top = "55px"; food.style.left = "52%"; food.style.opacity = "1";
+    document.getElementById("choke-status").innerHTML = "Vias aéreas obstruídas! Pressione!";
+    document.getElementById("choke-status").style.color = "#FFEB3B";
+    document.getElementById("btn-heimlich-action").innerHTML = "🔺 APLICAR MANOBRA (0/5)";
+    document.getElementById("btn-heimlich-action").disabled = false;
+    changeScreen('screen-choke-game');
+}
+
+function applyHeimlichThrust() {
+    heimlichCount++;
+    document.getElementById("btn-heimlich-action").innerHTML = `🔺 APLICAR MANOBRA (${heimlichCount}/5)`;
     
-    if(screenId === 'screen-game') {
-        score = 0;
-        current = 0;
-        // Restaura a estrutura padrão caso o jogo tenha sido concluído anteriormente
-        document.getElementById("screen-game").innerHTML = `
-            <h1>🎮 TREINAMENTO</h1>
-            <h2 id="question"></h2>
-            <div id="explanation"></div>
-            <div id="answers"></div>
-            <button id="next" onclick="nextQuestion()">Próxima Missão ➔</button>
-            <div id="score" style="margin-top: 20px;">Pontos: 0</div>
-            <button class="btn-back" onclick="goToMenu()">↩ Voltar ao Menu</button>
-        `;
-        loadQuestion();
+    // Animação de compressão na tela
+    const avatar = document.getElementById("victim-face");
+    avatar.style.transform = "scale(0.85)";
+    setTimeout(() => { avatar.style.transform = "scale(1)"; }, 100);
+
+    if (heimlichCount >= 5) {
+        document.getElementById("btn-heimlich-action").disabled = true;
+        document.getElementById("victim-face").innerHTML = "😀";
+        document.getElementById("choke-status").innerHTML = "🟢 SUCESSO! Alimento expelido!";
+        document.getElementById("choke-status").style.color = "#4CAF50";
+        
+        // Objeto voa para fora do cenário
+        const food = document.getElementById("choke-food");
+        food.style.top = "-50px";
+        food.style.left = "80%";
+        food.style.opacity = "0";
+
+        setTimeout(() => {
+            alert("🥖 PARABÉNS! Você salvou a vítima de engasgo usando a Manobra de Heimlich correta!");
+            changeScreen('screen-games-menu');
+        }, 600);
     }
 }
 
-function goToMenu() {
-    changeScreen('screen-menu');
-}
-
-let score = 0;
-let current = 0;
-
+// --- LÓGICA DO QUIZ (20 PERGUNTAS VIRTUAIS) ---
+let score = 0; let current = 0;
 const quiz = [
-    {
-        question: "Uma pessoa engasgou ao seu lado, levou as mãos ao pescoço e NÃO consegue emitir som. O que fazer?",
-        explanation: "💡 Se a pessoa não emite som, o engasgo é total. Ligue 192 e faça a Manobra de Heimlich (pressão na boca do estômago para dentro e para cima).",
-        answers: [
-            {text: "Ligar para o SAMU (192) e iniciar a Manobra de Heimlich", correct: true},
-            {text: "Dar socos fortes nas costas dela imediatamente", correct: false},
-            {text: "Dar um copo d'água para ela beber devagar", correct: false}
-        ]
-    },
-    {
-        question: "Uma pessoa cortou a mão com uma faca e está sangrando muito. O que fazer primeiro?",
-        explanation: "💡 Pressione o local com um pano limpo para estancar o sangramento. Nunca jogue pó de café, pois causa infecções graves.",
-        answers: [
-            {text: "Jogar pó de café no ferimento", correct: false},
-            {text: "Lavar o corte e fazer compressão direta com pano limpo", correct: true},
-            {text: "Passar pasta de dente para fechar o corte", correct: false}
-        ]
-    },
-    {
-        question: "Um idoso sente uma dor forte no peito que vai para o braço esquerdo e está suando frio. O que fazer?",
-        explanation: "💡 Esses são sintomas clássicos de Infarto (Ataque Cardíaco). Ligue para o SAMU (192) imediatamente e mantenha a pessoa calma e sentada.",
-        answers: [
-            {text: "Ligar para o SAMU (192) imediatamente", correct: true},
-            {text: "Pedir para ele caminhar para o sangue circular", correct: false},
-            {text: "Dar um copo de água com açúcar", correct: false}
-        ]
-    },
-    {
-        question: "Alguém começa a ter uma convulsão (debater-se no chão). Qual a atitude correta?",
-        explanation: "💡 Proteja a cabeça da vítima com algo macio e vire-a de lado para não engasgar com a saliva. NUNCA tente segurar a língua dela!",
-        answers: [
-            {text: "Colocar um objecto ou o dedo na boca dela para segurar a língua", correct: false},
-            {text: "Segurar os braços da pessoa com força para ela parar", correct: false},
-            {text: "Proteger a cabeça com algo macio e virá-la de lado", correct: true}
-        ]
-    },
-    {
-        question: "Uma pessoa foi picada por uma cobra no pé durante uma trilha. O que fazer?",
-        explanation: "💡 Lave apenas com água e sabão e leve a vítima deitada ao hospital. NUNCA faça torniquetes ou tente 'sugar' o veneno, isso piora a situação.",
-        answers: [
-            {text: "Lavar com água e sabão e manter a vítima em repouso até o hospital", correct: true},
-            {text: "Fazer um torniquete (amarrar forte) acima da picada", correct: false},
-            {text: "Cortar o local e sugar o veneno com a boca", correct: false}
-        ]
-    },
-    {
-        question: "Uma pessoa do seu lado de repente fica com a boca torta, não consegue levantar um dos braços e fala de forma confusa. O que está acontecendo?",
-        explanation: "💡 Estes são os 3 sinais clássicos de um AVC (Acidente Vascular Cerebral). Cada minuto conta! Ligue imediatamente para o 192.",
-        answers: [
-            {text: "É um sinal de AVC. Ligue para o SAMU (192) imediatamente", correct: true},
-            {text: "A pressão dela baixou. Dê algo salgado para comer", correct: false},
-            {text: "Ela está apenas cansada. Peça para se deitar e dormir", correct: false}
-        ]
-    },
-    {
-        question: "Alguém caiu e está com suspeita de fratura na perna (dor intensa e local inchado). O que fazer?",
-        explanation: "💡 Nunca tente 'colocar o osso no lugar'. Imobilize a perna na posição em que ela está, usando talas improvisadas (papelão, revistas) sem apertar muito.",
-        answers: [
-            {text: "Puxar a perna com força para alinhar o osso", correct: false},
-            {text: "Massagear o local com pomada para dor", correct: false},
-            {text: "Imobilizar o membro na posição atual e chamar o socorro", correct: true}
-        ]
-    },
-    {
-        question: "Ao presenciar alguém sofrendo um choque elétrico numa tomada caseira, qual a primeira ação?",
-        explanation: "💡 Nunca toque na vítima enquanto ela estiver em contato com a corrente elétrica, ou você também levará o choque. Desligue a energia primeiro.",
-        answers: [
-            {text: "Desligar o disjuntor geral ou a chave de energia imediatamente", correct: true},
-            {text: "Puxar a pessoa pelos braços para afastá-la da tomada", correct: false},
-            {text: "Jogar água na tomada para apagar possíveis faíscas", correct: false}
-        ]
-    },
-    {
-        question: "Após passar horas ao sol, uma pessoa apresenta pele muito quente e seca, dor de cabeça e confusão mental (Insolação). O que fazer?",
-        explanation: "💡 A insolação grave é uma emergência médica. Mude a pessoa para um local fresco, aplique compressas frias e ligue para o 192.",
-        answers: [
-            {text: "Dar bebidas alcoólicas bem frias para refrescar rápido", correct: false},
-            {text: "Levar para um local fresco, resfriar o corpo com panos úmidos e dar água se estiver consciente", correct: true},
-            {text: "Abafá-la com cobertores para ela suar o calor para fora", correct: false}
-        ]
-    },
-    {
-        question: "Uma pessoa sofreu um acidente e está com um pedaço de vidro ou ferro cravado (empalado) na perna. O que fazer?",
-        explanation: "💡 Nunca remova um objeto penetrante! Ele pode estar estancando uma artéria. Deixe-o fixo no lugar e proteja-o até chegar ao hospital.",
-        answers: [
-            {text: "Puxar o objeto rapidamente para poder lavar o ferimento", correct: false},
-            {text: "NÃO remover o objeto, imobilizá-lo e procurar atendimento médico", correct: true},
-            {text: "Mexer no objeto de um lado para o outro para ver se está solto", correct: false}
-        ]
-    },
-    {
-        question: "Um bebê com menos de 1 ano engasgou com um brinquedo pequeno e não consegue chorar ou tossir. Como agir?",
-        explanation: "💡 Em bebês usa-se a Manobra de Desengasgo Pediátrica: deite o bebê de bruços no seu antebraço, com a cabeça mais baixa que o corpo, e dê 5 batidas firmes entre as escápulas nas costas.",
-        answers: [
-            {text: "Colocar o bebê de bruços no braço e dar 5 pancadas firmes nas costas", correct: true},
-            {text: "Segurar o bebê pelas pernas de cabeça para baixo e chacoalhar", correct: false},
-            {text: "Tentar puxar o objeto às cegas colocando o dedo no fundo da garganta", correct: false}
-        ]
-    },
-    {
-        question: "O nariz de uma criança começou a sangrar muito de repente. Qual a posição correta para colocá-la?",
-        explanation: "💡 Incline a cabeça ligeiramente para FRENTE e aperte as narinas. Inclinar para trás faz o sangue ir para o estômago ou pulmões, causando vômito ou asfixia.",
-        answers: [
-            {text: "Inclinar a cabeça para trás para o sangue parar de descer", correct: false},
-            {text: "Inclinar a cabeça para a frente e pressionar o nariz por alguns minutos", correct: true},
-            {text: "Deitar a criança de costas sem travesseiro", correct: false}
-        ]
-    },
-    {
-        question: "Alguém caiu de uma altura de 3 metros, está consciente, mas reclama de muita dor nas costas. O que fazer?",
-        explanation: "💡 Há alto risco de lesão na coluna/medula. Movimentar a vítima pode causar paralisia permanente. Mantenha-a imóvel e chame o Corpo de Bombeiros (193).",
-        answers: [
-            {text: "Ajudar a pessoa a levantar devagar e caminhar até um banco", correct: false},
-            {text: "NÃO movimentar a pessoa e chamar o resgate (192/193) imediatamente", correct: true},
-            {text: "Colocá-la no banco de trás de um carro comum para ir ao hospital rápido", correct: false}
-        ]
-    },
-    {
-        question: "Uma pessoa foi mordida por um cachorro de rua no braço. O que fazer de imediato?",
-        explanation: "💡 Lave imediatamente com água corrente e sabão por vários minutos para remover as bactérias e o vírus da raiva presentes na saliva. Procure um posto de saúde.",
-        answers: [
-            {text: "Lavar abundantemente com água e sabão e procurar um médico", correct: true},
-            {text: "Colocar pó de café ou folhas de plantas para cicatrizar", correct: false},
-            {text: "Cobrir o ferimento firmemente com plástico filme sem lavar", correct: false}
-        ]
-    },
-    {
-        question: "Uma pessoa que comeu amendoim começa a ter o rosto inchado, placas vermelhas na pele e muita falta de ar. O que fazer?",
-        explanation: "💡 Trata-se de um Choque Anafilático (reação alérgica grave). É uma emergência médica gravíssima que fecha as vias aéreas. Ligue 192 na hora.",
-        answers: [
-            {text: "Dar um antialérgico em gotas e esperar 1 hora para ver se melhora", correct: false},
-            {text: "Chamar o SAMU (192) imediatamente, pois é uma reação alérgica grave", correct: true},
-            {text: "Pedir para a pessoa beber leite para cortar o efeito", correct: false}
-        ]
-    },
-    {
-        question: "Uma criança pequena bebeu acidentalmente um produto de limpeza (cloro). O que você deve fazer?",
-        explanation: "💡 NUNCA force o vômito em caso de ingestão de produtos químicos corrosivos, pois o produto queima a garganta ao subir novamente. Ligue para o SAMU (192).",
-        answers: [
-            {text: "Forçar a criança a vomitar imediatamente colocando o dedo na garganta", correct: false},
-            {text: "Dar bastante leite ou água com vinagre para neutralizar", correct: false},
-            {text: "Não provocar vômito, identificar o produto e ligar para o socorro médico", correct: true}
-        ]
-    },
-    {
-        question: "Uma pessoa desmaiou após ficar muito tempo em pé no calor. Ela já está deitada no chão e respirando. Como ajudar a acordar?",
-        explanation: "💡 Elevar as pernas da vítima a cerca de 30 cm ajuda o sangue a retornar mais rápido para o cérebro, acelerando a recuperação do desmaio comum.",
-        answers: [
-            {text: "Elevar as pernas da vítima a cerca de 30 centímetros do chão", correct: true},
-            {text: "Dar pequenos tapas no rosto dela até ela abrir os olhos", correct: false},
-            {text: "Esfregar álcool diretamente no nariz dela", correct: false}
-        ]
-    },
-    {
-        question: "Um produto químico de limpeza espirrou direto nos olhos de um trabalhador. Qual a conduta correta?",
-        explanation: "💡 Lave o olho aberto com água corrente de forma contínua por pelo menos 15 a 20 minutos para remover o produto. Não use colírios sem orientação médica.",
-        answers: [
-            {text: "Lavar o olho aberto com água corrente de forma contínua por 15 a 20 minutos", correct: true},
-            {text: "Pingar qualquer colírio que tiver em casa para acalmar a ardência", correct: false},
-            {text: "Manter o olho fechado e colocar uma compressa quente por cima", correct: false}
-        ]
-    },
-    {
-        question: "Durante um jogo de futebol, um jogador teve uma fratura exposta no braço (o osso quebrou e rasgou a pele). O que fazer?",
-        explanation: "💡 Nunca tente empurrar o osso para dentro! Cubra o ferimento delicadamente com um pano limpo ou gaze para evitar contaminação e chame o resgate.",
-        answers: [
-            {text: "Tentar empurrar o osso para dentro antes que infeccione", correct: false},
-            {text: "Lavar com álcool em gel diretamente sobre o osso exposto", correct: false},
-            {text: "Não mexer no osso, cubrir o ferimento com um pano limpo e chamar socorro", correct: true}
-        ]
-    },
-    {
-        question: "Em um dia muito quente, uma criança pequena apresenta boca seca, choro sem lágrimas e olhos fundos. O que isso indica?",
-        explanation: "💡 Estes são sinais claros de desidratação grave. Ofereça soro caseiro ou água mineral em pequenos goles e busque atendimento médico imediatamente.",
-        answers: [
-            {text: "Sinais de desidratação. Oferecer líquidos (água/soro) e buscar orientação médica", correct: true},
-            {text: "Insolação leve. Basta passar um pano úmido na testa e deixá-la dormir", correct: false},
-            {text: "Fome extrema. Deve-se dar uma refeição pesada imediatamente", correct: false}
-        ]
-    }
+    { question: "Uma pessoa engasgou e NÃO consegue emitir som. O que fazer?", actionType: "heimlich", answers: [{text: "Fazer Manobra de Heimlich", correct: true}, {text: "Dar água", correct: false}] },
+    { question: "Vítima com dor forte no peito e braço esquerdo dormente.", actionType: "call192", answers: [{text: "Ligar para a Emergência (Infarto)", correct: true}, {text: "Fazer caminhar", correct: false}] },
+    { question: "Uma pessoa do seu lado de repente fica com a boca torta e fala confuso.", actionType: "call192", answers: [{text: "Chamar ajuda médica (Sinal de AVC)", correct: true}, {text: "Dar sal", correct: false}] },
+    { question: "Alguém começa a ter uma convulsão (debater-se no chão).", actionType: "convulsion", answers: [{text: "Proteger a cabeça e virá-la de lado", correct: true}, {text: "Segurar a língua", correct: false}] },
+    { question: "Uma pessoa cortou a mão e está sangrando muito.", actionType: "compress", answers: [{text: "Fazer compressão direta com pano limpo", correct: true}, {text: "Passar pó de café", correct: false}] },
+    { question: "Uma pessoa foi picada por uma cobra no pf durante uma trilha.", actionType: "rest", answers: [{text: "Lavar com água/sabão e manter em repouso", correct: true}, {text: "Fazer um torniquete", correct: false}] },
+    { question: "Alguém caiu e está com suspeita de fratura na perna.", actionType: "splint", answers: [{text: "Imobilizar o membro na posição atual", correct: true}, {text: "Puxar para alinhar", correct: false}] },
+    { question: "Ao ver alguém sofrendo um choque elétrico numa tomada.", actionType: "poweroff", answers: [{text: "Desligar o disjuntor geral imediatamente", correct: true}, {text: "Puxar a pessoa", correct: false}] },
+    { question: "Após passar horas ao sol, pessoa apresenta pele quente, seca e confusão.", actionType: "cool", answers: [{text: "Levar para local fresco e usar panos úmidos", correct: true}, {text: "Dar álcool", correct: false}] },
+    { question: "Vítima com um pedaço de vidro cravado na perna.", actionType: "donttouch", answers: [{text: "NÃO remover o objeto e imobilizá-lo", correct: true}, {text: "Puxar rápido", correct: false}] },
+    { question: "Um bebê com menos de 1 ano engasgou e não consegue chorar.", actionType: "babyheimlich", answers: [{text: "Deitar de bruços no braço e dar 5 batidas nas costas", correct: true}, {text: "Sacudir pelas pernas", correct: false}] },
+    { question: "O nariz de uma criança começou a sangrar muito de repente.", actionType: "nosebleed", answers: [{text: "Inclinar a cabeça para frente e pressionar", correct: true}, {text: "Inclinar para trás", correct: false}] },
+    { question: "Alguém caiu de uma altura e reclama de muita dor nas costas.", actionType: "call193", answers: [{text: "NÃO movimentar e chamar resgate", correct: true}, {text: "Levantar devagar", correct: false}] },
+    { question: "Uma pessoa foi mordida por um cachorro de rua no braço.", actionType: "washwound", answers: [{text: "Lavar abundantemente com água e sabão", correct: true}, {text: "Passar pomada caseira", correct: false}] },
+    { question: "Rosto inchado e muita falta de ar após comer amendoim.", actionType: "call192", answers: [{text: "Chamar ambulância (Choque Anafilático)", correct: true}, {text: "Esperar passar", correct: false}] },
+    { question: "Uma criança pequena bebeu acidentalmente cloro.", actionType: "call192", answers: [{text: "Não provocar vômito e buscar socorro", correct: true}, {text: "Forçar o vômito", correct: false}] },
+    { question: "Uma pessoa desmaiou após ficar muito tempo em pé no calor.", actionType: "elevatelegs", answers: [{text: "Elevar as pernas da vítima a 30cm", correct: true}, {text: "Dar tapas no rosto", correct: false}] },
+    { question: "Um produto químico de limpeza espirrou direto nos olhos de alguém.", actionType: "washeyes", answers: [{text: "Lavar com água corrente por 15 a 20 minutos", correct: true}, {text: "Passar colírio caseiro", correct: false}] },
+    { question: "Jogador teve uma fratura exposta no braço durante a partida.", actionType: "call193", answers: [{text: "Cobrir com pano limpo e chamar socorro", correct: true}, {text: "Empurrar o osso", correct: false}] },
+    { question: "No calor, bebê apresenta boca seca, choro sem lágrimas e olhos fundos.", actionType: "call192", answers: [{text: "Oferecer soro/líquidos e ir ao médico", correct: true}, {text: "Dar comida pesada", correct: false}] }
 ];
 
-function loadQuestion(){
-    const q = quiz[current];
-    document.getElementById("question").innerHTML = q.question;
-    document.getElementById("explanation").style.display = "none";
-    
-    const answers = document.getElementById("answers");
-    answers.innerHTML = "";
-
-    q.answers.forEach(answer => {
-        const btn = document.createElement("button");
-        btn.innerHTML = answer.text;
-        btn.onclick = () => select(btn, answer.correct);
-        answers.appendChild(btn);
-    });
-
-    document.getElementById("next").style.display = "none";
-    document.getElementById("score").innerHTML = "Pontos: " + score;
+function loadQuestion() {
+    const q = quiz[current] || quiz[0]; document.getElementById("question").innerHTML = q.question;
+    document.getElementById("explanation").style.display = "none"; document.getElementById("action-zone").style.display = "none"; document.getElementById("next").style.display = "none";
+    const ansDiv = document.getElementById("answers"); ansDiv.innerHTML = "";
+    q.answers.forEach(a => { const b = document.createElement("button"); b.innerHTML = a.text; b.onclick = () => select(b, a.correct); ansDiv.appendChild(b); });
 }
-
-function select(button, correct){
-    const buttons = document.querySelectorAll("#answers button");
-    buttons.forEach(b => b.disabled = true);
-
-    const q = quiz[current];
-    const expDiv = document.getElementById("explanation");
-    expDiv.innerHTML = q.explanation;
-    expDiv.style.display = "block";
-
-    if(correct){
-        button.className = "correct";
-        score += 100;
-    } else {
-        button.className = "wrong";
-        buttons.forEach((b, index) => {
-            if(q.answers[index].correct) b.className = "correct";
-        });
-    }
-
-    document.getElementById("score").innerHTML = "Pontos: " + score;
-    document.getElementById("next").style.display = "block";
+function select(btn, isCorrect) {
+    document.querySelectorAll("#answers button").forEach(b => b.disabled = true);
+    if(isCorrect) { btn.className = "correct"; score += 100; showAction(quiz[current].actionType); } 
+    else { btn.className = "wrong"; document.getElementById("next").style.display = "block"; }
+    document.getElementById("score-text").innerHTML = "Pontos: " + score;
 }
-
-function nextQuestion(){
-    current++;
-    if(current >= quiz.length){
-        document.getElementById("screen-game").innerHTML = `
-            <h1>🏆 Treinamento Concluído!</h1>
-            <h2>Você terminou todas as 20 missões.</h2>
-            <h1 style="font-size: 48px; color: #FFEB3B;">${score} pts</h1>
-            <button onclick="location.reload()">Voltar ao Início</button>
-        `;
-        return;
-    }
-    loadQuestion();
+function showAction(type) {
+    const zone = document.getElementById("action-zone"); zone.style.display = "block";
+    if(type === "call192") { zone.innerHTML = `<p>📞 Simulando Chamada para o SAMU (192)...</p><button class="btn-emergency" onclick="confirmVirtualAction('Chamada Efetuada! Linha médica ativa.')">📳 CONECTAR CHAMADA</button>`; } 
+    else if(type === "call193") { zone.innerHTML = `<p>🚒 Simulando Chamada para Bombeiros (193)...</p><button class="btn-emergency" onclick="confirmVirtualAction('Chamada Efetuada! Resgate acionado.')">📳 CONECTAR RESGATE</button>`; } 
+    else if(type === "heimlich") { zone.innerHTML = `<button onclick="confirmVirtualAction('✅ Objeto expelido com a manobra!')">🔺 SIMULAR HEIMLICH</button>`; } 
+    else { zone.innerHTML = `<button onclick="confirmVirtualAction('✅ Procedimento realizado.')">🤝 APLICAR CUIDADO</button>`; }
 }
+function confirmVirtualAction(msg) { document.getElementById("action-zone").innerHTML = `<p style="color:#4CAF50; font-weight:bold; margin:10px 0;">${msg}</p>`; document.getElementById("next").style.display = "block"; }
+function nextQuestion() { current++; if(current >= quiz.length) { alert("🏆 Treinamento finalizado!"); changeScreen('screen-menu'); } else { loadQuestion(); } }
 </script>
 
 </body>
